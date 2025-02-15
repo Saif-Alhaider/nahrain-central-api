@@ -1,6 +1,12 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.config;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.EmailValidator;
+import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.NahrainEmailValidatorImpl;
+import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.Mapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +41,16 @@ public class ApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public EmailValidator emailValidator() {
+        return new NahrainEmailValidatorImpl();
+    }
+
+    @Bean
+    public Mapper<User, RegisterRequestDto> userMapper() {
+        return new UserMapper(passwordEncoder());
     }
 
     @Bean

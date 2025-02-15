@@ -1,5 +1,7 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.NahrainEmailValidatorImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

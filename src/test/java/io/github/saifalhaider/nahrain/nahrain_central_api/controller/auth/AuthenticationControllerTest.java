@@ -1,14 +1,17 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.controller.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.ApiResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.AuthenticationResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.RegisterRequestDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.BaseResponseCode;
-import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.JwtService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.LoginService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.RegisterService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.Mapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.controller.AuthenticationController;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.LoginService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RegisterService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHelper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.jwt.JwtValidator;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.AuthenticationResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -38,6 +42,10 @@ public class AuthenticationControllerTest {
 
     @MockitoBean
     private LoginService loginService;
+    @MockitoBean
+    private JwtHelper jwtHelper;
+    @MockitoBean
+    private JwtValidator jwtValidator;
 
     @MockitoBean
     private JwtService jwtService;

@@ -1,13 +1,16 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.ApiResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.RegisterRequestDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.BaseResponseCode;
-import io.github.saifalhaider.nahrain.nahrain_central_api.model.entity.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.repository.UserRepository;
-import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.exception.EmailNotValid;
-import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.exception.UserAlreadyExists;
-import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.Mapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RegisterService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.EmailNotValid;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

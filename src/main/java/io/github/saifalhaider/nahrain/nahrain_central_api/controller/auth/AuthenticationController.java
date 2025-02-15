@@ -1,8 +1,9 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.controller;
+package io.github.saifalhaider.nahrain.nahrain_central_api.controller.auth;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.LoginRequestDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.AuthenticationResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.AuthenticationResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.LoginRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.RegisterRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.LoginService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.RegisterService;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +19,16 @@ public class AuthenticationController {
     private final LoginService loginService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponseDto> register(
+    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(
             @RequestBody RegisterRequestDto request
     ) {
-        return ResponseEntity.ok(registerService.register(request));
+        return registerService.register(request);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponseDto> register(
+    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(
             @RequestBody LoginRequestDto request
-    ){
-        return ResponseEntity.ok(loginService.login(request));
+    ) {
+        return loginService.login(request);
     }
 }

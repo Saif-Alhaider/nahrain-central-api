@@ -1,7 +1,7 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.RegisterRequestDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.entity;
+package io.github.saifalhaider.nahrain.nahrain_central_api.model.entity;
 
 
 import jakarta.persistence.*;

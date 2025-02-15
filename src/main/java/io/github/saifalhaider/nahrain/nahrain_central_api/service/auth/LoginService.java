@@ -1,10 +1,15 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.AuthenticationResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.LoginRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.AuthenticationResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.LoginRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.AuthResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,8 +21,10 @@ public class LoginService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
 
-    public AuthenticationResponseDto login(LoginRequestDto request) {
+
+    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(LoginRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(),
                         request.getPassword())
@@ -27,7 +34,8 @@ public class LoginService {
                 .orElseThrow(() -> new UsernameNotFoundException(""));
 
         val jwtToken = jwtService.generateToken(user);
-
-        return AuthenticationResponseDto.builder().token(jwtToken).build();
+        val payload = AuthenticationResponseDto.builder().token(jwtToken).build();
+        val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
+        return ResponseEntity.ok(ApiResponseDto.response(statusInfo, payload));
     }
 }

@@ -1,6 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.repository;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

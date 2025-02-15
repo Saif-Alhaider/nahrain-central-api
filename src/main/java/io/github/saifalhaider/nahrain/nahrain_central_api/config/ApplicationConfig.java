@@ -1,10 +1,13 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.config;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.RegisterRequestDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.BaseResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.EmailValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.NahrainEmailValidatorImpl;
+import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.BaseResponseCodeToInfoMapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +54,11 @@ public class ApplicationConfig {
     @Bean
     public Mapper<User, RegisterRequestDto> userMapper() {
         return new UserMapper(passwordEncoder());
+    }
+
+    @Bean
+    public Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeMapper() {
+        return new BaseResponseCodeToInfoMapper();
     }
 
     @Bean

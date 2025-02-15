@@ -1,7 +1,9 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.RegisterRequestDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.BaseResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.exception.EmailNotValid;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.exception.UserAlreadyExists;
@@ -41,12 +43,16 @@ public class RegisterServiceTest {
     @Autowired
     private RegisterService authenticationService;
 
+    @MockitoBean
+    private Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper; // ✅ Mocked mapper
+
     @BeforeEach
     public void setUp() {
         authenticationService = new RegisterService(userRepository,
                 jwtService,
                 emailValidator,
-                userMapper
+                userMapper,
+                baseResponseCodeToInfoMapper
         );
     }
 

@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto;
+package io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequestDto {
-    private String email;
-    private String password;
+public class AuthenticationResponseDto {
+    private String token;
 }

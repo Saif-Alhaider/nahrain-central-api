@@ -1,14 +1,19 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.AuthenticationResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.dto.authDto.RegisterRequestDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.AuthenticationResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.auth.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.AuthResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.dto.responseCode.BaseResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.model.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.exception.EmailNotValid;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.auth.exception.UserAlreadyExists;
 import io.github.saifalhaider.nahrain.nahrain_central_api.service.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,8 +23,9 @@ public class RegisterService {
     private final JwtService jwtService;
     private final EmailValidator emailValidator;
     private final Mapper<User,RegisterRequestDto> userMapper;
+    private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
 
-    public AuthenticationResponseDto register(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
+    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
         validateRegisterRequest(request);
 
         val user = userMapper.toEntity(request);
@@ -27,7 +33,10 @@ public class RegisterService {
         userRepository.save(user);
 
         val jwt = jwtService.generateToken(user);
-        return AuthenticationResponseDto.builder().token(jwt).build();
+        val payload = AuthenticationResponseDto.builder().token(jwt).build();
+        val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponseDto.response(statusInfo, payload));
     }
 
     private void validateRegisterRequest(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {

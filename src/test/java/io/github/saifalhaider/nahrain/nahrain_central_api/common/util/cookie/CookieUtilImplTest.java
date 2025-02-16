@@ -1,6 +1,9 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.util.cookie;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,5 +38,22 @@ public class CookieUtilImplTest {
         assertEquals(Duration.ofSeconds(MAX_AGE), responseCookie.getMaxAge());
         assertEquals(isHttpOnly, responseCookie.isHttpOnly());
         assertEquals(isSecure, responseCookie.isSecure());
+    }
+
+    @Test
+    void should_return_cookie_value_when_cookie_exists() {
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        Cookie mockCookie = new Cookie(NAME, VALUE);
+        Mockito.when(request.getCookies()).thenReturn(new Cookie[]{mockCookie});
+        String result = cookieUtil.getCookieByName(request, NAME);
+        assertEquals(VALUE, result);
+    }
+
+    @Test
+    void should_return_null_when_cookie_does_not_exist() {
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(request.getCookies()).thenReturn(null);
+        String result = cookieUtil.getCookieByName(request, NAME);
+        assertNull(result);
     }
 }

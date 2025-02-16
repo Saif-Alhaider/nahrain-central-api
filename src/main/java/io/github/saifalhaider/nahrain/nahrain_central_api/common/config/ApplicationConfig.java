@@ -15,6 +15,8 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.User
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.mapper.BaseResponseCodeToInfoMapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.UserMapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.util.cookie.CookieUtil;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.util.cookie.CookieUtilImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -79,5 +81,10 @@ public class ApplicationConfig {
     @Bean
     public JwtValidator jwtValidator(JwtHelper jwtHelper) {
         return new JwtValidatorImpl(jwtHelper);
+    }
+
+    @Bean
+    public CookieUtil cookieUtil(){
+        return new CookieUtilImpl();
     }
 }

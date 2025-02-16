@@ -34,7 +34,7 @@ public class LoginService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException(""));
 
-        val jwtToken = jwtService.generateToken(user);
+        val jwtToken = jwtService.generateAccessToken(user);
         val payload = AuthenticationResponseDto.builder().token(jwtToken).build();
         val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
         return ResponseEntity.ok(ApiResponseDto.response(statusInfo, payload));

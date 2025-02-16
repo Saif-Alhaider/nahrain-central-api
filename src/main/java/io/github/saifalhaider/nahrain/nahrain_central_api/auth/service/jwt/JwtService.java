@@ -3,9 +3,9 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.config.JwtConfig;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 
 
@@ -13,16 +13,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtConfig jwtConfig;
-    final Integer TOKEN_VALIDITY = 7 * 24 * 60 * 60 * 1000;
+    @Value("${jwt.access-token-validity}")
+    private long ACCESS_TOKEN_VALIDITY;
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateAccessToken(UserDetails userDetails) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
+                .expiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY))
                 .signWith(jwtConfig.getSignInKey())
                 .compact();
     }
-
-    //todo add generate ref token
 }

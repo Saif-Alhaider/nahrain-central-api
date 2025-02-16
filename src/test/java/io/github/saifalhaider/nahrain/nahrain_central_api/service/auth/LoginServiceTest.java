@@ -50,7 +50,7 @@ public class LoginServiceTest {
     public void should_return_responseDto_when_user_exists() {
         LoginRequestDto loginRequestDto = LoginRequestDto.builder().email("example@nahrainuniv.edu.iq").password("password1234").build();
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User()));
-        when(jwtService.generateToken(any())).thenReturn("jwtToken");
+        when(jwtService.generateAccessToken(any())).thenReturn("jwtToken");
 
         ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> result = loginService.login(loginRequestDto);
 

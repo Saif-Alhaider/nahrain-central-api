@@ -1,9 +1,11 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.entity.RefreshToken;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RegisterService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.EmailNotValid;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
@@ -22,6 +24,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +47,9 @@ public class RegisterServiceTest {
     @MockitoBean
     private Mapper<User, RegisterRequestDto> userMapper;
 
+    @MockitoBean
+    private RefreshTokenService refreshTokenService;
+
     @Autowired
     private RegisterService authenticationService;
 
@@ -53,6 +60,7 @@ public class RegisterServiceTest {
     public void setUp() {
         authenticationService = new RegisterService(userRepository,
                 jwtService,
+                refreshTokenService,
                 emailValidator,
                 userMapper,
                 baseResponseCodeToInfoMapper
@@ -82,13 +90,27 @@ public class RegisterServiceTest {
     }
 
     @Test
-    public void should_register_new_user_when_email_is_valid() {
+    public void should_register_new_user_when_email_is_valid() throws UserAlreadyExists, EmailNotValid {
+        // Arrange
         RegisterRequestDto request = new RegisterRequestDto();
         request.setEmail("test@nahrainuniv.edu.iq");
         request.setPassword("test1234");
 
-        when(emailValidator.isValid(request.getEmail())).thenReturn(true);
+        // Mock User
+        User mockUser = User.builder().id(1).build();
 
+        // Mock a valid refresh token
+        RefreshToken mockToken = RefreshToken.builder().token("mock-refresh-token").build();
+
+        // Mock external dependencies
+        when(emailValidator.isValid(request.getEmail())).thenReturn(true);
+        when(userMapper.toEntity(request)).thenReturn(mockUser);
+        when(userRepository.save(mockUser)).thenReturn(mockUser);
+        when(refreshTokenService.createRefreshToken(mockUser.getId())).thenReturn(mockToken);
+
+        //Assert
         assertDoesNotThrow(() -> authenticationService.register(request));
     }
+
+
 }

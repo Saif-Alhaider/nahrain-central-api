@@ -11,7 +11,9 @@ public enum AuthResponseCode implements BaseResponseCode {
     TOKEN_EXPIRED(1003, "Authentication token has expired"),
     UNAUTHORIZED_ACCESS(1004, "Unauthorized access"),
     REGISTER_SUCCESSFUL(1005, "Register Was Successful"),
-    LOGIN_SUCCESSFUL(1006, "Login Was Successful");
+    LOGIN_SUCCESSFUL(1006, "Login Was Successful"),
+    INVALID_TOKEN(1007, "Invalid Token"),
+    REFRESH_TOKEN_CREATED(1008, "Refresh Token Created Successfully");
 
     private final int code;
     private final String message;

@@ -31,7 +31,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        Collection<? extends GrantedAuthority> authorities;
+        if (role == null) {
+            authorities= List.of();
+        }else {
+            authorities = List.of(new SimpleGrantedAuthority(role.name()));
+        }
+        return authorities;
     }
 
     @Override

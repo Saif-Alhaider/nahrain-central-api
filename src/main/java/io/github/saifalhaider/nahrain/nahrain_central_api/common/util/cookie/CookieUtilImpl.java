@@ -17,13 +17,13 @@ public class CookieUtilImpl implements CookieUtil {
     }
 
     @Override
-    public ResponseCookie createRegularCookie(String name, String value, String path, long maxAge) {
-        return buildCookie(name, value, path, maxAge, false, false);
+    public ResponseCookie createRegularCookie(String name, String value, String path, long maxAgeInSeconds) {
+        return buildCookie(name, value, path, maxAgeInSeconds, false, false);
     }
 
     @Override
-    public ResponseCookie createHttpOnlyCookie(String name, String value, String path, long maxAge) {
-        return buildCookie(name, value, path, maxAge, true, true);
+    public ResponseCookie createHttpOnlyCookie(String name, String value, String path, long maxAgeInSeconds) {
+        return buildCookie(name, value, path, maxAgeInSeconds, true, true);
     }
 
     @Override

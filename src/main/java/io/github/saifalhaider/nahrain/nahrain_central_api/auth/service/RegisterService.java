@@ -34,17 +34,17 @@ public class RegisterService {
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
         validateRegisterRequest(request);
 
-        val user = userMapper.toEntity(request);
+        User user = userMapper.toEntity(request);
 
         userRepository.save(user);
 
-        val jwt = jwtService.generateAccessToken(user);
-        val payload = AuthenticationResponseDto.builder().token(jwt).build();
-        val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
-        val refToken = refreshTokenService.createRefreshToken(user.getId());
-        val refTokenCookie = generateCookie("JWTRefreshCookie", refToken.getToken(), "/api/v1/auth/refreshtoken");
+        String jwt = jwtService.generateAccessToken(user);
+        AuthenticationResponseDto payload = AuthenticationResponseDto.builder().token(jwt).build();
+        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
+        ResponseCookie refToken = refreshTokenService.generateRefreshTokenCookie(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, refTokenCookie.toString()).body(ApiResponseDto.response(statusInfo, payload));
+        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, refToken.toString())
+                .body(ApiResponseDto.response(statusInfo, payload));
     }
 
     private void validateRegisterRequest(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
@@ -53,10 +53,5 @@ public class RegisterService {
         } else if (!emailValidator.isValid(request.getEmail())) {
             throw new EmailNotValid("The email must belong to nahrainuniv.edu.iq domain");
         }
-    }
-
-    private ResponseCookie generateCookie(String name, String value, String path) {
-        return ResponseCookie.from(name, value).path(path).maxAge(refreshTokenService.REFRESH_TOKEN_VALIDITY_MS)
-                .httpOnly(true).build();
     }
 }

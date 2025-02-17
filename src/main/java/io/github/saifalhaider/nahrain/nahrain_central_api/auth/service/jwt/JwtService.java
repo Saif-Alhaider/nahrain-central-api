@@ -13,7 +13,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtConfig jwtConfig;
-    @Value("${jwt.access-token-validity}")
+    @Value("${jwt.access_token_validity_milliseconds}")
     private long ACCESS_TOKEN_VALIDITY;
 
     public String generateAccessToken(UserDetails userDetails) {

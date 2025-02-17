@@ -1,5 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.entity.RefreshToken;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RegisterService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.EmailNotValid;
@@ -8,15 +9,15 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtSe
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -24,8 +25,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
@@ -102,15 +101,15 @@ public class RegisterServiceTest {
         // Mock a valid refresh token
         RefreshToken mockToken = RefreshToken.builder().token("mock-refresh-token").build();
 
+
         // Mock external dependencies
         when(emailValidator.isValid(request.getEmail())).thenReturn(true);
         when(userMapper.toEntity(request)).thenReturn(mockUser);
         when(userRepository.save(mockUser)).thenReturn(mockUser);
-        when(refreshTokenService.createRefreshToken(mockUser.getId())).thenReturn(mockToken);
+        when(refreshTokenService.generateRefreshTokenCookie(mockUser))
+                .thenReturn(ResponseCookie.from("cookieName", mockToken.getToken()).build());
 
         //Assert
         assertDoesNotThrow(() -> authenticationService.register(request));
     }
-
-
 }

@@ -2,6 +2,7 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.LoginService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.AuthenticationResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRequestDto;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,6 +37,8 @@ public class LoginServiceTest {
     private AuthenticationManager authenticationManager;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private RefreshTokenService refreshTokenService;
 
     private LoginService loginService;
 
@@ -43,7 +47,7 @@ public class LoginServiceTest {
 
     @BeforeEach
     public void setUp() {
-        loginService = new LoginService(jwtService, authenticationManager, userRepository,baseResponseCodeToInfoMapper);
+        loginService = new LoginService(jwtService, authenticationManager, userRepository,baseResponseCodeToInfoMapper,refreshTokenService);
     }
 
     @Test
@@ -51,6 +55,8 @@ public class LoginServiceTest {
         LoginRequestDto loginRequestDto = LoginRequestDto.builder().email("example@nahrainuniv.edu.iq").password("password1234").build();
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User()));
         when(jwtService.generateAccessToken(any())).thenReturn("jwtToken");
+        when(refreshTokenService.generateRefreshTokenCookie(any()))
+                .thenReturn(ResponseCookie.from("cookieName", "refresh_token").build());
 
         ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> result = loginService.login(loginRequestDto);
 

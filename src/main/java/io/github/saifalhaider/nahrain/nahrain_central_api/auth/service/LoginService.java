@@ -31,12 +31,11 @@ public class LoginService {
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(LoginRequestDto request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(),
-                        request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException(""));
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
         val jwtToken = jwtService.generateAccessToken(user);
         val payload = AuthenticationResponseDto.builder().token(jwtToken).build();

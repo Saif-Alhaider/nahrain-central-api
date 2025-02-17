@@ -13,7 +13,9 @@ public enum AuthResponseCode implements BaseResponseCode {
     REGISTER_SUCCESSFUL(1005, "Register Was Successful"),
     LOGIN_SUCCESSFUL(1006, "Login Was Successful"),
     INVALID_TOKEN(1007, "Invalid Token"),
-    REFRESH_TOKEN_CREATED(1008, "Refresh Token Created Successfully");
+    REFRESH_TOKEN_CREATED(1008, "Refresh Token Created Successfully"),
+    USER_ALREADY_EXISTS(1009, "User already exists"),
+    USER_NOT_FOUND(1010, "User Not Found");
 
     private final int code;
     private final String message;

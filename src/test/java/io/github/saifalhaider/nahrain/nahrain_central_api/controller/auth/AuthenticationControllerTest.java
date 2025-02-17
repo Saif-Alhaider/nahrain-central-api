@@ -3,9 +3,13 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.controller.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.controller.AuthenticationController;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.AuthenticationResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.LoginService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RegisterService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.InvalidToken;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHelper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
@@ -13,6 +17,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validatio
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -81,4 +87,67 @@ public class AuthenticationControllerTest {
                 .andExpect(jsonPath("$.info.message").value("User registered"))
                 .andExpect(jsonPath("$.payload.token").value("token"));
     }
+
+    @Test
+    public void should_Return_UserNotFoundException_When_LoginFails() throws Exception {
+        val request = new LoginRequestDto("foo@nahrainuniv.edu.iq", "invalidPassword");
+
+        when(loginService.login(any(LoginRequestDto.class))).thenThrow(new UsernameNotFoundException("User not found"));
+
+        val authResponseCode = AuthResponseCode.USER_NOT_FOUND;
+
+        val statusInfo = ApiResponseDto.StatusInfo.builder()
+                .code(authResponseCode.getCode())
+                .message(authResponseCode.getMessage())
+                .build();
+
+        when(baseResponseCodeToInfoMapper.toEntity(authResponseCode)).thenReturn(statusInfo);
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.info.message").value(authResponseCode.getMessage()));
+    }
+
+    @Test
+    public void should_Return_UserAlreadyExistsException_When_RegistrationFails() throws Exception {
+        val request = new RegisterRequestDto("test@nahrainuniv.edu.iq", "password123");
+
+        when(registerService.register(any(RegisterRequestDto.class))).thenThrow(new UserAlreadyExists("User already exists"));
+
+        val authResponseCode = AuthResponseCode.USER_ALREADY_EXISTS;
+
+        val statusInfo = ApiResponseDto.StatusInfo.builder()
+                .code(authResponseCode.getCode())
+                .message(authResponseCode.getMessage())
+                .build();
+
+        when(baseResponseCodeToInfoMapper.toEntity(authResponseCode)).thenReturn(statusInfo);
+
+        mockMvc.perform(post("/api/v1/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.info.message").value(authResponseCode.getMessage()));
+    }
+
+    @Test
+    public void should_Return_InvalidTokenException_When_TokenIsInvalid() throws Exception {
+        when(refreshTokenService.refreshToken(any(HttpServletRequest.class))).thenThrow(new InvalidToken("token", "Invalid token"));
+
+        val authResponseCode = AuthResponseCode.INVALID_TOKEN;
+
+        val statusInfo = ApiResponseDto.StatusInfo.builder()
+                .code(authResponseCode.getCode())
+                .message(authResponseCode.getMessage())
+                .build();
+
+        when(baseResponseCodeToInfoMapper.toEntity(authResponseCode)).thenReturn(statusInfo);
+
+        mockMvc.perform(post("/api/v1/auth/refreshtoken"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.info.message").value(authResponseCode.getMessage()));
+    }
+
 }

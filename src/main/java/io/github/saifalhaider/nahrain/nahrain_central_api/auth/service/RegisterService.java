@@ -9,12 +9,11 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtSe
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;

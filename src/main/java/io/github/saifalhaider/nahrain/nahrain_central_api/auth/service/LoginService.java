@@ -3,8 +3,6 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.AuthenticationResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
@@ -23,11 +21,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LoginService {
-    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
-    private final RefreshTokenService refreshTokenService;
+    private final AuthSessionIssuerService authSessionIssuerService;
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(LoginRequestDto request) {
         authenticationManager.authenticate(
@@ -37,13 +34,14 @@ public class LoginService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
-        val jwtToken = jwtService.generateAccessToken(user);
-        val payload = AuthenticationResponseDto.builder().token(jwtToken).build();
+        val authTokens = authSessionIssuerService.generateNewAuthToken(user);
+
         val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
-        ResponseCookie refToken = refreshTokenService.generateRefreshTokenCookie(user);
+        val payload = AuthenticationResponseDto.builder().token(authTokens.getToken()).build();
+
 
         return ResponseEntity.status(HttpStatus.OK)
-                .header(HttpHeaders.SET_COOKIE, refToken.toString())
+                .header(HttpHeaders.SET_COOKIE, authTokens.getRefreshToken().toString())
                 .body(ApiResponseDto.response(statusInfo, payload));
     }
 }

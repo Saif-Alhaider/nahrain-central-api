@@ -1,8 +1,9 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt;
+package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service;
 
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.Repository.RefreshTokenRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.AuthenticationResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.entity.AuthIssue;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.entity.RefreshToken;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.InvalidToken;
@@ -10,11 +11,9 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiRespons
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.util.cookie.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +32,9 @@ public class RefreshTokenService {
     public String REFRESH_TOKEN_COOKIE_NAME;
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserRepository userRepository;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
-    private final JwtService jwtService;
     private final CookieUtil cookieUtil;
+    private final AuthSessionIssuerService authSessionIssuerService;
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> refreshToken(HttpServletRequest request) {
         String refreshToken = cookieUtil.getCookieByName(request, REFRESH_TOKEN_COOKIE_NAME);
@@ -45,6 +42,7 @@ public class RefreshTokenService {
             return refreshTokenRepository.findByToken(refreshToken)
                     .map(this::verifyExpiration)
                     .map(RefreshToken::getUser)
+                    .map(authSessionIssuerService::generateNewAuthToken)
                     .map(this::generateRefreshTokenResponse)
                     .orElseThrow(() -> new InvalidToken(refreshToken,
                             "Refresh token is not in database"));
@@ -54,53 +52,16 @@ public class RefreshTokenService {
     }
 
     private ResponseEntity<ApiResponseDto<AuthenticationResponseDto>>
-    generateRefreshTokenResponse(User user) {
-        ResponseCookie cookie = generateRefreshTokenCookie(user);
-        String accessToken = jwtService.generateAccessToken(user);
+    generateRefreshTokenResponse(AuthIssue authIssue) {
         AuthenticationResponseDto payload = AuthenticationResponseDto.builder()
-                .token(accessToken)
+                .token(authIssue.getToken())
                 .build();
 
         ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REFRESH_TOKEN_CREATED);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, authIssue.getRefreshToken().toString())
                 .body(ApiResponseDto.response(statusInfo, payload));
-    }
-
-    public ResponseCookie generateRefreshTokenCookie(User user) {
-        String refreshToken = createRefreshToken(user).getToken();
-        return buildRefreshTokenCookie(refreshToken);
-    }
-
-    private ResponseCookie buildRefreshTokenCookie(String refreshToken) {
-        return cookieUtil.createHttpOnlyCookie(
-                REFRESH_TOKEN_COOKIE_NAME,
-                refreshToken,
-                "/api/v1/auth/refreshtoken",
-                REFRESH_TOKEN_VALIDITY_MS / 1000
-        );
-    }
-
-    private RefreshToken createRefreshToken(User user) {
-        val refToken = refreshTokenRepository.findByUserId(user.getId());
-
-        RefreshToken newRefreshToken;
-
-        if (refToken.isPresent()) {
-            newRefreshToken = refToken.get();
-            newRefreshToken.setToken(UUID.randomUUID().toString());
-            newRefreshToken.setExpiryDate(Instant.now().plusMillis(REFRESH_TOKEN_VALIDITY_MS));
-
-        } else {
-            newRefreshToken = RefreshToken.builder()
-                    .user(user)
-                    .expiryDate(Instant.now().plusMillis(REFRESH_TOKEN_VALIDITY_MS))
-                    .token(UUID.randomUUID().toString())
-                    .build();
-        }
-
-        return refreshTokenRepository.save(newRefreshToken);
     }
 
 

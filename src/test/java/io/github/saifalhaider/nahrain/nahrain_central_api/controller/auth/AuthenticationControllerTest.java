@@ -11,8 +11,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RegisterS
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.InvalidToken;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHelper;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.jwt.JwtValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
@@ -52,9 +51,6 @@ public class AuthenticationControllerTest {
     private JwtHelper jwtHelper;
     @MockitoBean
     private JwtValidator jwtValidator;
-
-    @MockitoBean
-    private JwtService jwtService;
 
     @MockitoBean
     private Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;

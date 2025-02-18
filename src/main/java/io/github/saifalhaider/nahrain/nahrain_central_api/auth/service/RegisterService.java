@@ -5,8 +5,6 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.Registe
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.EmailNotValid;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
@@ -14,9 +12,9 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +22,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RegisterService {
     private final UserRepository userRepository;
-    private final JwtService jwtService;
-    private final RefreshTokenService refreshTokenService;
     private final EmailValidator emailValidator;
     private final Mapper<User, RegisterRequestDto> userMapper;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
+    private final AuthSessionIssuerService authSessionIssuerService;
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
         validateRegisterRequest(request);
@@ -37,12 +34,12 @@ public class RegisterService {
 
         userRepository.save(user);
 
-        String jwt = jwtService.generateAccessToken(user);
-        AuthenticationResponseDto payload = AuthenticationResponseDto.builder().token(jwt).build();
-        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
-        ResponseCookie refToken = refreshTokenService.generateRefreshTokenCookie(user);
+        val authTokens = authSessionIssuerService.generateNewAuthToken(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, refToken.toString())
+        AuthenticationResponseDto payload = AuthenticationResponseDto.builder().token(authTokens.getToken()).build();
+        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
+
+        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, authTokens.getRefreshToken().toString())
                 .body(ApiResponseDto.response(statusInfo, payload));
     }
 

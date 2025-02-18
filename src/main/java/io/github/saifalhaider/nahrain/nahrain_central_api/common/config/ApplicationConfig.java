@@ -1,6 +1,9 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.config;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.Repository.RefreshTokenRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.config.JwtConfig;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler.JwtAccessTokenHandler;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler.RefreshTokenHandler;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHelper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHelperImpl;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
@@ -86,5 +89,14 @@ public class ApplicationConfig {
     @Bean
     public CookieUtil cookieUtil(){
         return new CookieUtilImpl();
+    }
+
+    @Bean
+    public RefreshTokenHandler refreshTokenHandler(CookieUtil cookieUtil, RefreshTokenRepository refreshTokenRepository){
+        return new RefreshTokenHandler(cookieUtil,refreshTokenRepository);
+    }
+    @Bean
+    public JwtAccessTokenHandler jwtAccessTokenHandler(JwtConfig jwtConfig){
+        return new JwtAccessTokenHandler(jwtConfig);
     }
 }

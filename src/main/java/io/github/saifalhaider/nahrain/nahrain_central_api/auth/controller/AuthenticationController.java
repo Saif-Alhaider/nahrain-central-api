@@ -5,7 +5,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRe
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.LoginService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RegisterService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/v1/auth") //todo remove static paths
 @CrossOrigin
 @RequiredArgsConstructor
 public class AuthenticationController {

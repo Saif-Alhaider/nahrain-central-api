@@ -1,8 +1,9 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.entity.AuthIssue;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.AuthSessionIssuerService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.LoginService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtService;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.RefreshTokenService;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.AuthenticationResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRequestDto;
@@ -30,9 +31,6 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class LoginServiceTest {
-
-    @Mock
-    private JwtService jwtService;
     @Mock
     private AuthenticationManager authenticationManager;
     @Mock
@@ -43,20 +41,23 @@ public class LoginServiceTest {
     private LoginService loginService;
 
     @MockitoBean
-    private Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper; // ✅ Mocked mapper
+    private Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
+
+    @Mock
+    private AuthSessionIssuerService authSessionIssuerService;
 
     @BeforeEach
     public void setUp() {
-        loginService = new LoginService(jwtService, authenticationManager, userRepository,baseResponseCodeToInfoMapper,refreshTokenService);
+        loginService = new LoginService(authenticationManager, userRepository, baseResponseCodeToInfoMapper, authSessionIssuerService);
     }
 
     @Test
     public void should_return_responseDto_when_user_exists() {
         LoginRequestDto loginRequestDto = LoginRequestDto.builder().email("example@nahrainuniv.edu.iq").password("password1234").build();
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User()));
-        when(jwtService.generateAccessToken(any())).thenReturn("jwtToken");
-        when(refreshTokenService.generateRefreshTokenCookie(any()))
-                .thenReturn(ResponseCookie.from("cookieName", "refresh_token").build());
+        ResponseCookie responseCookie = ResponseCookie.from("cookieName", "refresh_token").build();
+
+        when(authSessionIssuerService.generateNewAuthToken(any())).thenReturn(AuthIssue.builder().token("jwtToken").refreshToken(responseCookie).build());
 
         ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> result = loginService.login(loginRequestDto);
 

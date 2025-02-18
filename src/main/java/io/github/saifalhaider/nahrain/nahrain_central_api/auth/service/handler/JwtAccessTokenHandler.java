@@ -1,20 +1,18 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt;
+package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.config.JwtConfig;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+
 import java.util.Date;
 
-
-@Service
 @RequiredArgsConstructor
-public class JwtService {
-    private final JwtConfig jwtConfig;
+public class JwtAccessTokenHandler {
     @Value("${jwt.access_token_validity_milliseconds}")
     private long ACCESS_TOKEN_VALIDITY;
+    private final JwtConfig jwtConfig;
 
     public String generateAccessToken(UserDetails userDetails) {
         return Jwts.builder()

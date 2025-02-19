@@ -27,6 +27,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation ("com.google.zxing:core:3.5.3")
+	implementation ("com.google.zxing:javase:3.5.3")
+	implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.1")
+	implementation("commons-codec:commons-codec:1.15")
+
+
+
 	compileOnly("org.projectlombok:lombok")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")

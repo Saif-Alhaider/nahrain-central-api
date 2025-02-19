@@ -23,6 +23,8 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.util.cookie.Coo
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,6 +33,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.awt.image.BufferedImage;
 
 @Configuration
 @RequiredArgsConstructor
@@ -87,16 +91,22 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public CookieUtil cookieUtil(){
+    public CookieUtil cookieUtil() {
         return new CookieUtilImpl();
     }
 
     @Bean
-    public RefreshTokenHandler refreshTokenHandler(CookieUtil cookieUtil, RefreshTokenRepository refreshTokenRepository){
-        return new RefreshTokenHandler(cookieUtil,refreshTokenRepository);
+    public RefreshTokenHandler refreshTokenHandler(CookieUtil cookieUtil, RefreshTokenRepository refreshTokenRepository) {
+        return new RefreshTokenHandler(cookieUtil, refreshTokenRepository);
     }
+
     @Bean
-    public JwtAccessTokenHandler jwtAccessTokenHandler(JwtConfig jwtConfig){
+    public JwtAccessTokenHandler jwtAccessTokenHandler(JwtConfig jwtConfig) {
         return new JwtAccessTokenHandler(jwtConfig);
+    }
+
+    @Bean
+    public HttpMessageConverter<BufferedImage> imageConverter() {
+        return new BufferedImageHttpMessageConverter();
     }
 }

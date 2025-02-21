@@ -5,23 +5,23 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.InvalidToken;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseExceptionAdvice;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestControllerAdvice
-@RequiredArgsConstructor
-public class AuthControllerExceptions {
-    private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
+public class AuthControllerExceptions extends BaseExceptionAdvice {
+
+    public AuthControllerExceptions(Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper) {
+        super(baseResponseCodeToInfoMapper);
+    }
 
     //region bad request
     @ExceptionHandler({EmailNotValid.class})
@@ -51,16 +51,5 @@ public class AuthControllerExceptions {
     }
     //endregion
 
-    private ResponseEntity<ApiResponseDto<Map<String, Object>>> handleException(RuntimeException err, HttpStatus status, AuthResponseCode responseCode) {
-        Map<String, Object> errorResponse = Map.of(
-                "timestamp", LocalDateTime.now(),
-                "status", status.value(),
-                "error", status.getReasonPhrase(),
-                "message", err.getMessage()
-        );
-        val payload = ApiResponseDto.response(baseResponseCodeToInfoMapper.toEntity(responseCode), errorResponse);
-
-        return ResponseEntity.status(status).body(payload);
-    }
 }
 

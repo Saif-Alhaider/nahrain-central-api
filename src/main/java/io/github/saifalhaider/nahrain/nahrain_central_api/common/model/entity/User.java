@@ -28,14 +28,15 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private boolean mfaEnabled;
     private String totpSecret;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<? extends GrantedAuthority> authorities;
         if (role == null) {
-            authorities= List.of();
-        }else {
+            authorities = List.of();
+        } else {
             authorities = List.of(new SimpleGrantedAuthority(role.name()));
         }
         return authorities;

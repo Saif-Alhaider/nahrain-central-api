@@ -15,7 +15,11 @@ public enum AuthResponseCode implements BaseResponseCode {
     INVALID_TOKEN(1007, "Invalid Token"),
     REFRESH_TOKEN_CREATED(1008, "Refresh Token Created Successfully"),
     USER_ALREADY_EXISTS(1009, "User already exists"),
-    USER_NOT_FOUND(1010, "User Not Found");
+    USER_NOT_FOUND(1010, "User Not Found"),
+    TWO_FACTOR_NOT_ENABLED(1011, "2FA is Not Enabled"),
+    TOTP_IS_INCORRECT(1012, "Incorrect Totp Code"),
+    TOTP_VERIFIED(1013, "Totp Verified Successfully"),
+    ;
 
     private final int code;
     private final String message;

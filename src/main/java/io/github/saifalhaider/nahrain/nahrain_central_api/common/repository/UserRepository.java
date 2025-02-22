@@ -18,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Query("UPDATE User user SET user.totpSecret = :totpSecret WHERE user.email = :email")
     void updateTotpSecret(@Param("email") String email, @Param("totpSecret") String totpSecret);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User user SET user.mfaEnabled = :mfaEnabled WHERE user.email = :email")
+    void updateMfaEnabled(@Param("email") String email, @Param("mfaEnabled") boolean mfaEnabled);
 }

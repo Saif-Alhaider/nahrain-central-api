@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponseDto {
     private String token;
+    private boolean mfaEnabled;
 }

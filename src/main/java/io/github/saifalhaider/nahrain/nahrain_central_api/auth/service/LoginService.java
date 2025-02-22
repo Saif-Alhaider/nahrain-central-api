@@ -35,8 +35,8 @@ public class LoginService {
 
         val authTokens = authSessionIssuerService.generateNewAuthToken(user);
 
-        val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
-        val payload = AuthenticationResponseDto.builder().token(authTokens.getToken()).build();
+        val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.LOGIN_SUCCESSFUL);
+        val payload = AuthenticationResponseDto.builder().token(authTokens.getToken()).mfaEnabled(user.isMfaEnabled()).build();
 
 
         return ResponseEntity.status(HttpStatus.OK)

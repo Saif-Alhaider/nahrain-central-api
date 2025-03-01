@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1")
-@CrossOrigin
 @RequiredArgsConstructor
 public class TotpController {
 

@@ -34,7 +34,7 @@ public class AuthenticationController {
         return loginService.login(request);
     }
 
-    @GetMapping("/refreshtoken")
+    @PostMapping("/refreshtoken")
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> refreshToken(@RequestBody RefreshTokenDto request
     ) {
         return refreshTokenService.refreshToken(request);

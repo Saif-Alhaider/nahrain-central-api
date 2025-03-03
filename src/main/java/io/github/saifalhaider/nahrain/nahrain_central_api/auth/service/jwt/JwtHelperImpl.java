@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Date;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -14,6 +15,11 @@ public class JwtHelperImpl implements JwtHelper {
     @Override
     public String getUserNameClaim(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public Date getExpirationClaim(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     @Override

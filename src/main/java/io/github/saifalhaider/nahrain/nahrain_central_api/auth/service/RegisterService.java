@@ -5,6 +5,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.Registe
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.EmailNotValid;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler.JwtAccessTokenHandler;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
@@ -13,7 +14,6 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Us
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class RegisterService {
     private final EmailValidator emailValidator;
     private final Mapper<User, RegisterRequestDto> userMapper;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
-    private final AuthSessionIssuerService authSessionIssuerService;
+    private final JwtAccessTokenHandler jwtAccessTokenHandler;
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
         validateRegisterRequest(request);
@@ -34,12 +34,13 @@ public class RegisterService {
 
         userRepository.save(user);
 
-        val authTokens = authSessionIssuerService.generateNewAuthToken(user);
+        val accessToken = jwtAccessTokenHandler.generateAccessToken(user);
+        val refreshToken = jwtAccessTokenHandler.generateRefreshToken(user);
 
-        AuthenticationResponseDto payload = AuthenticationResponseDto.builder().token(authTokens.getToken()).build();
+        AuthenticationResponseDto payload = AuthenticationResponseDto.builder().token(accessToken).refreshToken(refreshToken).build();
         ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
 
-        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, authTokens.getRefreshToken().toString())
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponseDto.response(statusInfo, payload));
     }
 

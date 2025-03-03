@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponseDto {
-    private String token;
+public class RefreshTokenDto {
     private String refreshToken;
-    private boolean mfaEnabled;
 }

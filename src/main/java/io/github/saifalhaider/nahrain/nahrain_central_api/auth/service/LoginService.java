@@ -3,6 +3,7 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.AuthenticationResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler.JwtAccessTokenHandler;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
@@ -23,7 +24,7 @@ public class LoginService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
-    private final AuthSessionIssuerService authSessionIssuerService;
+    private final JwtAccessTokenHandler jwtAccessTokenHandler;
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(LoginRequestDto request) {
         authenticationManager.authenticate(
@@ -33,14 +34,14 @@ public class LoginService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
-        val authTokens = authSessionIssuerService.generateNewAuthToken(user);
+        val accessToken = jwtAccessTokenHandler.generateAccessToken(user);
+        val refreshToken = jwtAccessTokenHandler.generateRefreshToken(user);
 
         val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.LOGIN_SUCCESSFUL);
-        val payload = AuthenticationResponseDto.builder().token(authTokens.getToken()).mfaEnabled(user.isMfaEnabled()).build();
+        val payload = AuthenticationResponseDto.builder().token(accessToken).refreshToken(refreshToken).mfaEnabled(user.isMfaEnabled()).build();
 
 
         return ResponseEntity.status(HttpStatus.OK)
-                .header(HttpHeaders.SET_COOKIE, authTokens.getRefreshToken().toString())
                 .body(ApiResponseDto.response(statusInfo, payload));
     }
 }

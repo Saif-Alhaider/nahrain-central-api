@@ -1,7 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.service.auth;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.entity.AuthIssue;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.AuthSessionIssuerService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.LoginService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.RefreshTokenService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;

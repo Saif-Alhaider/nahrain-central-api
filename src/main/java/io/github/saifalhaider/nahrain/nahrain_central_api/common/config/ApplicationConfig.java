@@ -1,10 +1,8 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.config;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.Repository.RefreshTokenRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.config.JwtConfig;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler.JwtAccessTokenHandler;
-import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler.RefreshTokenHandler;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHelper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHelperImpl;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.mapper.BaseResponseCodeToInfoMapper;
@@ -18,8 +16,6 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.UserMapper;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.util.cookie.CookieUtil;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.util.cookie.CookieUtilImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -93,16 +89,6 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public CookieUtil cookieUtil() {
-        return new CookieUtilImpl();
-    }
-
-    @Bean
-    public RefreshTokenHandler refreshTokenHandler(CookieUtil cookieUtil, RefreshTokenRepository refreshTokenRepository) {
-        return new RefreshTokenHandler(cookieUtil, refreshTokenRepository);
-    }
-
-    @Bean
     public JwtAccessTokenHandler jwtAccessTokenHandler(JwtConfig jwtConfig) {
         return new JwtAccessTokenHandler(jwtConfig);
     }
@@ -117,8 +103,13 @@ public class ApplicationConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:3000");
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000") // Allow your React app's origin
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // Allow credentials (cookies)
             }
         };
     }
+
 }

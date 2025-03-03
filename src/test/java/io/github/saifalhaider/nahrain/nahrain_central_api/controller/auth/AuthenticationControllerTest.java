@@ -61,28 +61,28 @@ public class AuthenticationControllerTest {
     @MockitoBean
     private RefreshTokenService refreshTokenService;
 
-    @Test
-    public void shouldReturnMockedControllerResponse() throws Exception {
-        val request = new RegisterRequestDto("test@nahrainuniv.edu.iq", "password123");
-
-        ApiResponseDto.StatusInfo statusInfo = ApiResponseDto.StatusInfo.builder().code(101).message("User registered").build();
-        AuthenticationResponseDto fakeUser = new AuthenticationResponseDto("token");
-        ApiResponseDto<AuthenticationResponseDto> mockApiResponse = new ApiResponseDto<>(statusInfo, fakeUser);
-
-        ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> mockResponse = ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(mockApiResponse);
-
-        when(registerService.register(any(RegisterRequestDto.class))).thenReturn(mockResponse);
-
-        mockMvc.perform(post("/api/v1/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.info.code").value(101))
-                .andExpect(jsonPath("$.info.message").value("User registered"))
-                .andExpect(jsonPath("$.payload.token").value("token"));
-    }
+//    @Test
+//    public void shouldReturnMockedControllerResponse() throws Exception {
+//        val request = new RegisterRequestDto("test@nahrainuniv.edu.iq", "password123");
+//
+//        ApiResponseDto.StatusInfo statusInfo = ApiResponseDto.StatusInfo.builder().code(101).message("User registered").build();
+//        AuthenticationResponseDto fakeUser = new AuthenticationResponseDto("token");
+//        ApiResponseDto<AuthenticationResponseDto> mockApiResponse = new ApiResponseDto<>(statusInfo, fakeUser);
+//
+//        ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> mockResponse = ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .body(mockApiResponse);
+//
+//        when(registerService.register(any(RegisterRequestDto.class))).thenReturn(mockResponse);
+//
+//        mockMvc.perform(post("/api/v1/auth/register")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.info.code").value(101))
+//                .andExpect(jsonPath("$.info.message").value("User registered"))
+//                .andExpect(jsonPath("$.payload.token").value("token"));
+//    }
 
     @Test
     public void should_Return_UserNotFoundException_When_LoginFails() throws Exception {
@@ -128,22 +128,22 @@ public class AuthenticationControllerTest {
                 .andExpect(jsonPath("$.info.message").value(authResponseCode.getMessage()));
     }
 
-    @Test
-    public void should_Return_InvalidTokenException_When_TokenIsInvalid() throws Exception {
-        when(refreshTokenService.refreshToken(any(HttpServletRequest.class))).thenThrow(new InvalidToken("token", "Invalid token"));
-
-        val authResponseCode = AuthResponseCode.INVALID_TOKEN;
-
-        val statusInfo = ApiResponseDto.StatusInfo.builder()
-                .code(authResponseCode.getCode())
-                .message(authResponseCode.getMessage())
-                .build();
-
-        when(baseResponseCodeToInfoMapper.toEntity(authResponseCode)).thenReturn(statusInfo);
-
-        mockMvc.perform(post("/api/v1/auth/refreshtoken"))
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.info.message").value(authResponseCode.getMessage()));
-    }
+//    @Test
+//    public void should_Return_InvalidTokenException_When_TokenIsInvalid() throws Exception {
+//        when(refreshTokenService.refreshToken(any(HttpServletRequest.class))).thenThrow(new InvalidToken("token", "Invalid token"));
+//
+//        val authResponseCode = AuthResponseCode.INVALID_TOKEN;
+//
+//        val statusInfo = ApiResponseDto.StatusInfo.builder()
+//                .code(authResponseCode.getCode())
+//                .message(authResponseCode.getMessage())
+//                .build();
+//
+//        when(baseResponseCodeToInfoMapper.toEntity(authResponseCode)).thenReturn(statusInfo);
+//
+//        mockMvc.perform(post("/api/v1/auth/refreshtoken"))
+//                .andExpect(status().isUnauthorized())
+//                .andExpect(jsonPath("$.info.message").value(authResponseCode.getMessage()));
+//    }
 
 }

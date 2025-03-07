@@ -4,6 +4,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.Authent
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.handler.JwtAccessTokenHandler;
+import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
@@ -25,8 +26,11 @@ public class LoginService {
     private final UserRepository userRepository;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
     private final JwtAccessTokenHandler jwtAccessTokenHandler;
+    private final EmailValidator emailValidator;
+
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(LoginRequestDto request) {
+        request.setEmail(emailValidator.getCompletedEmail(request.getEmail()));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );

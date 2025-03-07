@@ -29,7 +29,7 @@ public class RegisterService {
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
         validateRegisterRequest(request);
-
+        request.setEmail(emailValidator.getCompletedEmail(request.getEmail()));
         User user = userMapper.toEntity(request);
 
         userRepository.save(user);

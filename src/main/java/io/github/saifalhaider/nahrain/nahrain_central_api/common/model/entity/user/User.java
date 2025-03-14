@@ -9,10 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 @Entity
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "_user")
 public abstract class User implements UserDetails {
     @Id
@@ -30,6 +34,10 @@ public abstract class User implements UserDetails {
     private String fullName;
     private String email;
     private String password;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 
     @Enumerated(EnumType.STRING)
     private Role role;

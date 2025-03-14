@@ -5,16 +5,11 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.Admin
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.PendingUserDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.ProfDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.StudentDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Admin;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.PendingUser;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Student;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/admin")

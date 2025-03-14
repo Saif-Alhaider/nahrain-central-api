@@ -36,6 +36,7 @@ public class GetUsersService {
                             .id(student.getId())
                             .fullName(student.getFullName())
                             .email(student.getEmail())
+                            .date(student.getCreatedDate())
                             .build())
                     .collect(Collectors.toList());
 
@@ -59,6 +60,7 @@ public class GetUsersService {
                             .id(admin.getId())
                             .fullName(admin.getFullName())
                             .email(admin.getEmail())
+                            .date(admin.getCreatedDate())
                             .build())
                     .collect(Collectors.toList());
 
@@ -82,6 +84,7 @@ public class GetUsersService {
                             .id(prof.getId())
                             .fullName(prof.getFullName())
                             .email(prof.getEmail())
+                            .date(prof.getCreatedDate())
                             .build())
                     .collect(Collectors.toList());
 
@@ -105,6 +108,7 @@ public class GetUsersService {
                             .id(pendingUser.getId())
                             .fullName(pendingUser.getFullName())
                             .email(pendingUser.getEmail())
+                            .date(pendingUser.getCreatedDate())
                             .build())
                     .collect(Collectors.toList());
 

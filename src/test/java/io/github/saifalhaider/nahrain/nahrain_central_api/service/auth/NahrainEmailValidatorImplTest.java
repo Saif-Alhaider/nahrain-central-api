@@ -5,7 +5,8 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validatio
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NahrainEmailValidatorImplTest {
 

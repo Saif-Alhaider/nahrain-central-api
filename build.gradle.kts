@@ -30,10 +30,10 @@ dependencies {
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.google.zxing:javase:3.5.3")
     implementation("commons-codec:commons-codec:1.15")
-    compileOnly("dev.samstevens.totp:totp:1.7.1")
+    implementation("dev.samstevens.totp:totp:1.7.1")
 
 
-    compileOnly("org.projectlombok:lombok")
+    implementation("org.projectlombok:lombok")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")

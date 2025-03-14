@@ -13,10 +13,11 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validatio
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
@@ -37,7 +38,9 @@ import java.awt.image.BufferedImage;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final UserRepository userRepository;
+    private final UserRepository<User,Integer> userRepository;
+    @Value("${frontend.url}")
+    private String FRONTEND_URL;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -104,10 +107,10 @@ public class ApplicationConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // Allow your React app's origin
+                        .allowedOriginPatterns(FRONTEND_URL)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true); // Allow credentials (cookies)
+                        .allowCredentials(true);
             }
         };
     }

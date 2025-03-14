@@ -2,9 +2,11 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.common.config.securit
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.filter.JWTAuthFilter;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.FilterChainExceptionHandler;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,8 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -32,6 +32,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/v1/totp").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/v1/verify-totp").permitAll()
+                        .requestMatchers("/api/v1/admin/**").hasAuthority(User.Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

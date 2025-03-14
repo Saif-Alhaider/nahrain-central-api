@@ -8,10 +8,10 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validatio
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService {
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
+    private final UserRepository<User, Integer> userRepository;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
     private final JwtAccessTokenHandler jwtAccessTokenHandler;
     private final EmailValidator emailValidator;

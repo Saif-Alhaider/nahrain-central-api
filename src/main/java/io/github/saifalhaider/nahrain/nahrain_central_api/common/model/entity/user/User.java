@@ -1,11 +1,14 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity;
+package io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user;
 
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Admin;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +19,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
+@SuperBuilder
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "_user")
-public class User implements UserDetails {
+public abstract class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
@@ -70,8 +74,20 @@ public class User implements UserDetails {
 
     public enum Role {
         ADMIN,
-        COORDINATOR,
         PROF,
         STUDENT
+    }
+
+    @PrePersist
+    public void assignSubclass() {
+        if (this instanceof Prof) {
+            this.role = Role.PROF;
+        } else if (this instanceof Student) {
+            this.role = Role.STUDENT;
+        } else if (this instanceof Admin) {
+            this.role = Role.ADMIN;
+        } else {
+            this.role = null;
+        }
     }
 }

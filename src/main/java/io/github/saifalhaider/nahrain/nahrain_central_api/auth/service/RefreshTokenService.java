@@ -10,6 +10,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.jwt.JwtHe
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -25,7 +26,7 @@ import java.util.Date;
 public class RefreshTokenService {
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
     private final JwtAccessTokenHandler jwtAccessTokenHandler;
-    private final UserRepository userRepository;
+    private final UserRepository<User,Integer> userRepository;
     private final JwtHelper jwtHelper;
 
     public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> refreshToken(RefreshTokenDto request) {

@@ -8,13 +8,13 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.totp.TotpVerificationR
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.service.TotpGeneratorService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.service.TotpValidatorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
 
-@CrossOrigin
 @RestController
 @RequestMapping("api/v1")
 @RequiredArgsConstructor
@@ -22,10 +22,13 @@ public class TotpController {
 
     private final TotpGeneratorService totpGeneratorService;
     private final TotpValidatorService totpValidatorService;
+    @Value("${frontend.url}")
+    private String FRONTEND_URL;
 
     @GetMapping(value = {"/totp"}, produces = {MediaType.IMAGE_PNG_VALUE})
     public BufferedImage generateTotp() throws WriterException, JwtAuthenticationException {
-        return totpGeneratorService.generateQrCode();
+        return totpGeneratorService
+                .generateQrCode();
     }
 
     @PostMapping("/verify-totp")

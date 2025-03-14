@@ -2,7 +2,8 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.UserFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,12 +15,14 @@ public class UserMapper implements Mapper<User, RegisterRequestDto> {
 
     @Override
     public User toEntity(RegisterRequestDto registerRequestDto) {
-        return User.builder()
-                .fullName(null)
-                .email(registerRequestDto.getEmail())
-                .password(passwordEncoder.encode(registerRequestDto.getPassword()))
-                .role(null)
-                .build();
+        return UserFactory.createUser(
+                registerRequestDto.getFullName(),
+                registerRequestDto.getEmail(),
+                passwordEncoder.encode(registerRequestDto.getPassword()),
+                null,
+                null,
+                null
+        );
     }
 
     @Override

@@ -11,7 +11,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiRespons
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.MessageDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.User;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.controller.Exceptions.IncorrectTotp;
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.controller.Exceptions.TwoFactorNotEnabled;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TotpValidatorService {
-    private final UserRepository userRepository;
+    private final UserRepository<User,Integer> userRepository;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
 
 

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RegisterService {
-    private final UserRepository userRepository;
+    private final UserRepository<User,Integer> userRepository;
     private final EmailValidator emailValidator;
     private final Mapper<User, RegisterRequestDto> userMapper;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;

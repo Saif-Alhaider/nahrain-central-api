@@ -14,6 +14,6 @@ import java.util.List;
 @Builder
 public class UsersDto<T extends UserDto> {
     private List<T> users;
-    private int page;
-    private int numberOfRecords;
+    private int totalPages;
+    private int totalNumberOfUsers;
 }

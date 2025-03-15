@@ -24,4 +24,9 @@ public interface UserRepository<T extends User, ID> extends JpaRepository<T, ID>
     @Transactional
     @Query("UPDATE User user SET user.mfaEnabled = :mfaEnabled WHERE user.email = :email")
     void updateMfaEnabled(@Param("email") String email, @Param("mfaEnabled") boolean mfaEnabled);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User user SET user.password = :password WHERE user.email = :email")
+    void updateUserPassword(@Param("email") String email, @Param("password") String password);
 }

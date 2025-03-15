@@ -9,6 +9,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.exceptions.JwtAuthenticationException;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -23,7 +24,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class TotpGeneratorService {
-    private final UserRepository userRepository;
+    private final UserRepository<User,Integer> userRepository;
 
     public BufferedImage generateQrCode() throws WriterException, JwtAuthenticationException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

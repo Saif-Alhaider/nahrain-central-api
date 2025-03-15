@@ -5,6 +5,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Ad
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +27,10 @@ public class AdminInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Admin user = Admin.builder().email(emailValidator.getCompletedEmail(email)).password(passwordEncoder.encode(password)).fullName(fullName).build();
-        userRepository.save(user);
+        val adminEmail = emailValidator.getCompletedEmail(email);
+        if (userRepository.findByEmail(adminEmail).isEmpty()) {
+            Admin user = Admin.builder().email(adminEmail).password(passwordEncoder.encode(password)).fullName(fullName).build();
+            userRepository.save(user);
+        }
     }
 }

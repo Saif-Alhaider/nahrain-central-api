@@ -16,39 +16,76 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RegisterService {
-    private final UserRepository<User,Integer> userRepository;
+    private final UserRepository<User, Integer> userRepository;
     private final EmailValidator emailValidator;
     private final Mapper<User, RegisterRequestDto> userMapper;
     private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
     private final JwtAccessTokenHandler jwtAccessTokenHandler;
+    private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
-        validateRegisterRequest(request);
+    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(RegisterRequestDto request)
+            throws UserAlreadyExists, EmailNotValid {
         request.setEmail(emailValidator.getCompletedEmail(request.getEmail()));
-        User user = userMapper.toEntity(request);
 
-        userRepository.save(user);
+        Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
 
-        val accessToken = jwtAccessTokenHandler.generateAccessToken(user);
-        val refreshToken = jwtAccessTokenHandler.generateRefreshToken(user);
+        if (existingUser.isPresent()) {
+            return handleExistingUser(existingUser.get(), request);
+        }
 
-        AuthenticationResponseDto payload = AuthenticationResponseDto.builder().token(accessToken).refreshToken(refreshToken).build();
-        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
+        validateEmail(request.getEmail());
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponseDto.response(statusInfo, payload));
+        User user = saveNewUser(request);
+        return generateSuccessResponse(user);
     }
 
-    private void validateRegisterRequest(RegisterRequestDto request) throws UserAlreadyExists, EmailNotValid {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+    private ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> handleExistingUser(User user, RegisterRequestDto request)
+            throws UserAlreadyExists {
+
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
             throw new UserAlreadyExists("The user with email " + request.getEmail() + " already exists");
-        } else if (!emailValidator.isValid(request.getEmail())) {
+        }
+
+        userRepository.updateUserPassword(request.getEmail(), passwordEncoder.encode(request.getPassword()));
+        return generateSuccessResponse(user);
+    }
+
+    private void validateEmail(String email) throws EmailNotValid {
+        if (!emailValidator.isValid(email)) {
             throw new EmailNotValid("The email must belong to nahrainuniv.edu.iq domain");
         }
     }
+
+    private User saveNewUser(RegisterRequestDto request) {
+        User user = userMapper.toEntity(request);
+        userRepository.save(user);
+        return user;
+    }
+
+    private ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> generateSuccessResponse(User user) {
+        AuthenticationResponseDto authResponse = generateAuthTokens(user);
+        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponseDto.response(statusInfo, authResponse));
+    }
+
+    private AuthenticationResponseDto generateAuthTokens(User user) {
+        val accessToken = jwtAccessTokenHandler.generateAccessToken(user);
+        val refreshToken = jwtAccessTokenHandler.generateRefreshToken(user);
+
+        return AuthenticationResponseDto.builder()
+                .token(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 }
+

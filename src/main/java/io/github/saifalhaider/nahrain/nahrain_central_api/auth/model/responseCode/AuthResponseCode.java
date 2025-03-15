@@ -19,6 +19,7 @@ public enum AuthResponseCode implements BaseResponseCode {
     TWO_FACTOR_NOT_ENABLED(1011, "2FA is Not Enabled"),
     TOTP_IS_INCORRECT(1012, "Incorrect Totp Code"),
     TOTP_VERIFIED(1013, "Totp Verified Successfully"),
+    NEW_USER_CREATED(1014, "New User Created Successfully"),
     ;
 
     private final int code;

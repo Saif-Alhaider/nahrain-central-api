@@ -43,7 +43,7 @@ public class GetUsersService {
             return UsersDto.<StudentDto>builder()
                     .users(students)
                     .totalPages(page.getTotalPages())
-                    .totalNumberOfUsers(page.getNumberOfElements())
+                    .totalNumberOfUsers(page.getTotalElements())
                     .build();
         };
 
@@ -67,7 +67,7 @@ public class GetUsersService {
             return UsersDto.<AdminDto>builder()
                     .users(admins)
                     .totalPages(page.getTotalPages())
-                    .totalNumberOfUsers(page.getNumberOfElements())
+                    .totalNumberOfUsers(page.getTotalElements())
                     .build();
         };
 
@@ -91,7 +91,7 @@ public class GetUsersService {
             return UsersDto.<ProfDto>builder()
                     .users(profs)
                     .totalPages(page.getTotalPages())
-                    .totalNumberOfUsers(page.getNumberOfElements())
+                    .totalNumberOfUsers(page.getTotalElements())
                     .build();
         };
 
@@ -115,7 +115,7 @@ public class GetUsersService {
             return UsersDto.<PendingUserDto>builder()
                     .users(pendingUsers)
                     .totalPages(page.getTotalPages())
-                    .totalNumberOfUsers(page.getNumberOfElements())
+                    .totalNumberOfUsers(page.getTotalElements())
                     .build();
         };
 

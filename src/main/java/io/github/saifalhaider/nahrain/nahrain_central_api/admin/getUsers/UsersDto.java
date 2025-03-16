@@ -15,5 +15,5 @@ import java.util.List;
 public class UsersDto<T extends UserDto> {
     private List<T> users;
     private int totalPages;
-    private int totalNumberOfUsers;
+    private long totalNumberOfUsers;
 }

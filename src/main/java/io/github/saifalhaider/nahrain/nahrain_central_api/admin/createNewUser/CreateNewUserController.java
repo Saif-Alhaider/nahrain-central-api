@@ -2,7 +2,6 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.admin.createNewUser;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.UserDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

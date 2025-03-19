@@ -5,6 +5,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class Home {
-
-}
+public class Home {}

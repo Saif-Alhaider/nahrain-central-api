@@ -2,14 +2,13 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.common.base;
 
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
+import java.time.LocalDateTime;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ abstract public class BaseExceptionAdvice {
                 "error", status.getReasonPhrase(),
                 "message", err.getMessage()
         );
-        val payload = ApiResponseDto.response(baseResponseCodeToInfoMapper.toEntity(responseCode), errorResponse);
+        val payload = ApiResponseDto.response(baseResponseCodeToInfoMapper.mapToDomain(responseCode), errorResponse);
 
         return ResponseEntity.status(status).body(payload);
     }

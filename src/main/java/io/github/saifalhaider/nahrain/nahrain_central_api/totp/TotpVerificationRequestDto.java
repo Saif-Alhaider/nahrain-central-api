@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class TotpVerificationRequestDto {
-    private Integer totpCode;
+  private Integer totpCode;
 }

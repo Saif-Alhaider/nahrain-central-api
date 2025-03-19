@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 public class NahrainCentralApiApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(NahrainCentralApiApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(NahrainCentralApiApplication.class, args);
+  }
 }

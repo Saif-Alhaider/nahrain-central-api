@@ -7,6 +7,4 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class ProfDto extends UserDto {
-
-}
+public class ProfDto extends UserDto {}

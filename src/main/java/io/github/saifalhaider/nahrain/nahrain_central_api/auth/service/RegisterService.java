@@ -12,14 +12,13 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseRespon
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -65,14 +64,14 @@ public class RegisterService {
     }
 
     private User saveNewUser(RegisterRequestDto request) {
-        User user = userMapper.toEntity(request);
+        User user = userMapper.mapToDomain(request);
         userRepository.save(user);
         return user;
     }
 
     private ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> generateSuccessResponse(User user) {
         AuthenticationResponseDto authResponse = generateAuthTokens(user);
-        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.REGISTER_SUCCESSFUL);
+        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.mapToDomain(AuthResponseCode.REGISTER_SUCCESSFUL);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponseDto.response(statusInfo, authResponse));

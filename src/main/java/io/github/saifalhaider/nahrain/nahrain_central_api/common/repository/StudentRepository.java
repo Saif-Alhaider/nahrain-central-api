@@ -4,5 +4,4 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.St
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends UserRepository<Student, Integer> {
-}
+public interface StudentRepository extends UserRepository<Student, Integer> {}

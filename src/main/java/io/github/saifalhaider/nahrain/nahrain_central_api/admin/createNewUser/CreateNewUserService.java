@@ -1,6 +1,5 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.admin.createNewUser;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.admin.getUsers.UsersDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.EmailNotValid;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.UserAlreadyExists;
@@ -22,7 +21,6 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.User
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Service
 @RequiredArgsConstructor

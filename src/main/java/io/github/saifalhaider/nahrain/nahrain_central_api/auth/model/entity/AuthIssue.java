@@ -7,6 +7,6 @@ import org.springframework.http.ResponseCookie;
 @Data
 @Builder
 public class AuthIssue {
-    private String token;
-    private ResponseCookie refreshToken;
+  private String token;
+  private ResponseCookie refreshToken;
 }

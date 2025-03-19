@@ -4,5 +4,4 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Ad
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdminRepository extends UserRepository<Admin, Integer> {
-}
+public interface AdminRepository extends UserRepository<Admin, Integer> {}

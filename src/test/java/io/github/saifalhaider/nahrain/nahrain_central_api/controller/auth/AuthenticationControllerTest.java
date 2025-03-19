@@ -1,5 +1,11 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.controller.auth;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.controller.AuthenticationController;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.LoginRequestDto;
@@ -23,12 +29,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(AuthenticationController.class)
@@ -92,7 +92,7 @@ public class AuthenticationControllerTest {
                 .message(authResponseCode.getMessage())
                 .build();
 
-        when(baseResponseCodeToInfoMapper.toEntity(authResponseCode)).thenReturn(statusInfo);
+        when(baseResponseCodeToInfoMapper.mapToDomain(authResponseCode)).thenReturn(statusInfo);
 
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ public class AuthenticationControllerTest {
                 .message(authResponseCode.getMessage())
                 .build();
 
-        when(baseResponseCodeToInfoMapper.toEntity(authResponseCode)).thenReturn(statusInfo);
+        when(baseResponseCodeToInfoMapper.mapToDomain(authResponseCode)).thenReturn(statusInfo);
 
         mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -19,27 +19,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final RegisterService registerService;
-    private final LoginService loginService;
-    private final RefreshTokenService refreshTokenService;
+  private final RegisterService registerService;
+  private final LoginService loginService;
+  private final RefreshTokenService refreshTokenService;
 
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(
-            @RequestBody RegisterRequestDto request
-    ) {
-        return registerService.register(request);
-    }
+  @PostMapping("/register")
+  public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> register(
+      @RequestBody RegisterRequestDto request) {
+    return registerService.register(request);
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(
-            @RequestBody LoginRequestDto request
-    ) {
-        return loginService.login(request);
-    }
+  @PostMapping("/login")
+  public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(
+      @RequestBody LoginRequestDto request) {
+    return loginService.login(request);
+  }
 
-    @PostMapping("/refreshtoken")
-    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> refreshToken(@RequestBody RefreshTokenDto request
-    ) {
-        return refreshTokenService.refreshToken(request);
-    }
+  @PostMapping("/refreshtoken")
+  public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> refreshToken(
+      @RequestBody RefreshTokenDto request) {
+    return refreshTokenService.refreshToken(request);
+  }
 }

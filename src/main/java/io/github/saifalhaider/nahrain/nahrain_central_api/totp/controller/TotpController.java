@@ -7,13 +7,12 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.Messa
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.TotpVerificationRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.service.TotpGeneratorService;
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.service.TotpValidatorService;
+import java.awt.image.BufferedImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.awt.image.BufferedImage;
 
 @RestController
 @RequestMapping("api/v1")

@@ -11,22 +11,21 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class UserMapper implements Mapper<User, RegisterRequestDto> {
-    private final PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public User toEntity(RegisterRequestDto registerRequestDto) {
-        return UserFactory.createUser(
-                registerRequestDto.getFullName(),
-                registerRequestDto.getEmail(),
-                passwordEncoder.encode(registerRequestDto.getPassword()),
-                null,
-                null,
-                null
-        );
-    }
+  @Override
+  public User mapToDomain(RegisterRequestDto registerRequestDto) {
+    return UserFactory.createUser(
+        registerRequestDto.getFullName(),
+        registerRequestDto.getEmail(),
+        passwordEncoder.encode(registerRequestDto.getPassword()),
+        null,
+        null,
+        null);
+  }
 
-    @Override
-    public List<User> toEntityList(List<RegisterRequestDto> registerRequestDtos) {
-        return registerRequestDtos.stream().map(this::toEntity).toList();
-    }
+  @Override
+  public List<User> mapToDomainList(List<RegisterRequestDto> registerRequestDtos) {
+    return registerRequestDtos.stream().map(this::mapToDomain).toList();
+  }
 }

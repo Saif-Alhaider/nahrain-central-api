@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class RoleDto {
-    private User.Role role;
+  private User.Role role;
 }

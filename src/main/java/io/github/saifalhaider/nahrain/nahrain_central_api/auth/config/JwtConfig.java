@@ -10,11 +10,11 @@ import java.util.Base64;
 @Configuration
 public class JwtConfig {
 
-    @Value("${app.key.secrete}")
-    private String SECRET_KEY;
+  @Value("${app.key.secrete}")
+  private String SECRET_KEY;
 
-    public SecretKey getSignInKey() {
-        byte[] bytes = Base64.getDecoder().decode(SECRET_KEY);
-        return new SecretKeySpec(bytes, "HmacSHA256");
-    }
+  public SecretKey getSignInKey() {
+    byte[] bytes = Base64.getDecoder().decode(SECRET_KEY);
+    return new SecretKeySpec(bytes, "HmacSHA256");
+  }
 }

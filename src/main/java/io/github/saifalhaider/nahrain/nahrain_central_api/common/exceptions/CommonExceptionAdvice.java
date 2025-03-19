@@ -5,12 +5,11 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiRespons
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseExceptionAdvice;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.Map;
 
 @RestControllerAdvice
 public class CommonExceptionAdvice extends BaseExceptionAdvice {

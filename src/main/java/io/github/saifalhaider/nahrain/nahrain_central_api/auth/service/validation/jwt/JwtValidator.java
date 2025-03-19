@@ -3,5 +3,5 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validati
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtValidator {
-    boolean isJwtValid(String token, UserDetails userDetails);
+  boolean isJwtValid(String token, UserDetails userDetails);
 }

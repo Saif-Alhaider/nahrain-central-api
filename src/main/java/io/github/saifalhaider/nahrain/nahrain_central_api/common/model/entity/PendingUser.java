@@ -12,5 +12,4 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Table(name = "pending_user")
 @PrimaryKeyJoinColumn(name = "id")
-public class PendingUser extends User {
-}
+public class PendingUser extends User {}

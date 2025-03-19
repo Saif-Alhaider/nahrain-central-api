@@ -1,10 +1,9 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto;
 
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

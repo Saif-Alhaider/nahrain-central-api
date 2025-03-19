@@ -6,12 +6,11 @@ import java.util.Date;
 import java.util.function.Function;
 
 public interface JwtHelper {
-    String getUserNameClaim(String token);
+  String getUserNameClaim(String token);
 
-    Date getExpirationClaim(String token);
+  Date getExpirationClaim(String token);
 
-    <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
+  <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
 
-    Claims extractAllClaims(String token);
+  Claims extractAllClaims(String token);
 }
-

@@ -14,18 +14,19 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @Component
 public class FilterChainExceptionHandler extends OncePerRequestFilter {
 
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver resolver;
+  @Autowired
+  @Qualifier("handlerExceptionResolver")
+  private HandlerExceptionResolver resolver;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
 
-        try {
-            filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            log.error("Spring Security Filter Chain Exception:", e);
-            resolver.resolveException(request, response, null, e);
-        }
+    try {
+      filterChain.doFilter(request, response);
+    } catch (Exception e) {
+      log.error("Spring Security Filter Chain Exception:", e);
+      resolver.resolveException(request, response, null, e);
     }
+  }
 }

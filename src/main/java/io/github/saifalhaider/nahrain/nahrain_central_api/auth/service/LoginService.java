@@ -10,6 +10,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseRespon
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.RoleBasedDtoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -22,30 +23,35 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LoginService {
-    private final AuthenticationManager authenticationManager;
-    private final UserRepository<User, Integer> userRepository;
-    private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
-    private final JwtAccessTokenHandler jwtAccessTokenHandler;
-    private final EmailValidator emailValidator;
+  private final AuthenticationManager authenticationManager;
+  private final UserRepository<User, Integer> userRepository;
+  private final Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> baseResponseCodeToInfoMapper;
+  private final JwtAccessTokenHandler jwtAccessTokenHandler;
+  private final EmailValidator emailValidator;
+  private final RoleBasedDtoMapper roleBasedDtoMapper;
 
+  public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(LoginRequestDto request) {
+    request.setEmail(emailValidator.getCompletedEmail(request.getEmail()));
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-    public ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> login(LoginRequestDto request) {
-        request.setEmail(emailValidator.getCompletedEmail(request.getEmail()));
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+    var user =
+        userRepository
+            .findByEmail(request.getEmail())
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+    val accessToken = jwtAccessTokenHandler.generateAccessToken(user);
+    val refreshToken = jwtAccessTokenHandler.generateRefreshToken(user);
 
-        val accessToken = jwtAccessTokenHandler.generateAccessToken(user);
-        val refreshToken = jwtAccessTokenHandler.generateRefreshToken(user);
+    val statusInfo = baseResponseCodeToInfoMapper.mapToDomain(AuthResponseCode.LOGIN_SUCCESSFUL);
+    val payload =
+        AuthenticationResponseDto.builder()
+            .token(accessToken)
+            .refreshToken(refreshToken)
+            .mfaEnabled(user.isMfaEnabled())
+            .user(roleBasedDtoMapper.mapToDto(user))
+            .build();
 
-        val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.LOGIN_SUCCESSFUL);
-        val payload = AuthenticationResponseDto.builder().token(accessToken).refreshToken(refreshToken).mfaEnabled(user.isMfaEnabled()).build();
-
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponseDto.response(statusInfo, payload));
-    }
+    return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDto.response(statusInfo, payload));
+  }
 }

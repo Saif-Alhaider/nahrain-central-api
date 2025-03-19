@@ -5,6 +5,9 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Ad
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Student;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +17,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -80,12 +79,6 @@ public abstract class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public enum Role {
-        ADMIN,
-        PROF,
-        STUDENT
-    }
-
     @PrePersist
     public void assignSubclass() {
         if (this instanceof Prof) {
@@ -97,5 +90,11 @@ public abstract class User implements UserDetails {
         } else {
             this.role = null;
         }
+    }
+
+    public enum Role {
+        ADMIN,
+        PROF,
+        STUDENT
     }
 }

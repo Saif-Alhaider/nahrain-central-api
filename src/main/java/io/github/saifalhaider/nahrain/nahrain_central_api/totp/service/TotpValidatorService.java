@@ -24,7 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @RequiredArgsConstructor
 public class TotpValidatorService {
@@ -44,7 +43,7 @@ public class TotpValidatorService {
         }
         if (isValid(user.getTotpSecret(), totp)) {
             userRepository.updateMfaEnabled(user.getEmail(), true);
-            val statusInfo = baseResponseCodeToInfoMapper.toEntity(AuthResponseCode.TOTP_VERIFIED);
+            val statusInfo = baseResponseCodeToInfoMapper.mapToDomain(AuthResponseCode.TOTP_VERIFIED);
             val payload = MessageDto.builder().message("Totp Verified Successfully").build();
 
             return ResponseEntity.status(HttpStatus.OK)

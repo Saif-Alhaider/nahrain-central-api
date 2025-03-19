@@ -15,34 +15,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/admin")
 @RequiredArgsConstructor
 public class GetUsersController {
-    private final GetUsersService getUsersService;
+  private final GetUsersService getUsersService;
 
+  @GetMapping("/students")
+  public ApiResponseDto<UsersDto<StudentDto>> getStudents(
+      @RequestParam(defaultValue = "0", required = false) int pageNumber,
+      @RequestParam(defaultValue = "1", required = false) int pageSize) {
+    return getUsersService.getStudents(pageNumber, pageSize);
+  }
 
-    @GetMapping("/students")
-    public ApiResponseDto<UsersDto<StudentDto>> getStudents(
-            @RequestParam(defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(defaultValue = "1", required = false) int pageSize) {
-        return getUsersService.getStudents(pageNumber, pageSize);
-    }
+  @GetMapping("/admins")
+  public ApiResponseDto<UsersDto<AdminDto>> getAdmins(
+      @RequestParam(defaultValue = "0", required = false) int pageNumber,
+      @RequestParam(defaultValue = "1", required = false) int pageSize) {
+    return getUsersService.getAdmins(pageNumber, pageSize);
+  }
 
-    @GetMapping("/admins")
-    public ApiResponseDto<UsersDto<AdminDto>> getAdmins(
-            @RequestParam(defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(defaultValue = "1", required = false) int pageSize) {
-        return getUsersService.getAdmins(pageNumber, pageSize);
-    }
+  @GetMapping("/profs")
+  public ApiResponseDto<UsersDto<ProfDto>> getProfs(
+      @RequestParam(defaultValue = "0", required = false) int pageNumber,
+      @RequestParam(defaultValue = "1", required = false) int pageSize) {
+    return getUsersService.getProfs(pageNumber, pageSize);
+  }
 
-    @GetMapping("/profs")
-    public ApiResponseDto<UsersDto<ProfDto>> getProfs(
-            @RequestParam(defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(defaultValue = "1", required = false) int pageSize) {
-        return getUsersService.getProfs(pageNumber, pageSize);
-    }
-
-    @GetMapping("/pending-users")
-    public ApiResponseDto<UsersDto<PendingUserDto>> getPendingUsers(
-            @RequestParam(defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(defaultValue = "1", required = false) int pageSize) {
-        return getUsersService.getPendingUsers(pageNumber, pageSize);
-    }
+  @GetMapping("/pending-users")
+  public ApiResponseDto<UsersDto<PendingUserDto>> getPendingUsers(
+      @RequestParam(defaultValue = "0", required = false) int pageNumber,
+      @RequestParam(defaultValue = "1", required = false) int pageSize) {
+    return getUsersService.getPendingUsers(pageNumber, pageSize);
+  }
 }

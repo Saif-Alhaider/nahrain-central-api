@@ -15,15 +15,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AdminInitializer implements CommandLineRunner {
     private final UserRepository<User, Integer> userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailValidator emailValidator;
     @Value("${admin.full_name}")
     private String fullName;
     @Value("${admin.email}")
     private String email;
     @Value("${admin.password}")
     private String password;
-    private final PasswordEncoder passwordEncoder;
-    private final EmailValidator emailValidator;
-
 
     @Override
     public void run(String... args) {

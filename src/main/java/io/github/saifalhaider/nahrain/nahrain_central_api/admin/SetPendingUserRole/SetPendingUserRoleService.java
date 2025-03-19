@@ -24,77 +24,78 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class SetPendingUserRoleService {
-    private final ProfRepository profRepository;
-    private final PendingUserRepository pendingUserRepository;
-    private final AdminRepository adminRepository;
-    private final StudentRepository studentRepository;
+  private final ProfRepository profRepository;
+  private final PendingUserRepository pendingUserRepository;
+  private final AdminRepository adminRepository;
+  private final StudentRepository studentRepository;
 
+  @Transactional
+  public ApiResponseDto<UserDto> updatePendingUserRole(Integer id, User.Role role) {
+    PendingUser user =
+        pendingUserRepository
+            .findById(id)
+            .orElseThrow(() -> new UsernameNotFoundException("User with id" + id + " not found"));
 
-    @Transactional
-    public ApiResponseDto<UserDto> updatePendingUserRole(Integer id, User.Role role) {
-        PendingUser user = pendingUserRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User with id" + id + " not found"));
+    user.setRole(role);
 
-        user.setRole(role);
+    User roleUser =
+        UserFactory.createUser(
+            user.getFullName(),
+            user.getEmail(),
+            user.getPassword(),
+            user.getRole(),
+            user.isMfaEnabled(),
+            user.getTotpSecret());
 
-
-
-        User roleUser = UserFactory.createUser(
-                user.getFullName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getRole(),
-                user.isMfaEnabled(),
-                user.getTotpSecret());
-
-
-        if (roleUser instanceof Admin) {
-            adminRepository.save((Admin) roleUser);
-        } else if (roleUser instanceof Prof) {
-            profRepository.save((Prof) roleUser);
-        } else if (roleUser instanceof Student) {
-            studentRepository.save((Student) roleUser);
-        } else {
-            throw new IllegalArgumentException("Unknown user role: " + roleUser.getClass().getSimpleName());
-        }
-
-        pendingUserRepository.deleteById(id);
-
-        UserDto response;
-
-
-        if (roleUser instanceof Admin) {
-            Admin admin = adminRepository.save((Admin) roleUser);
-            response = AdminDto.builder()
-                    .id(admin.getId())
-                    .date(admin.getCreatedDate())
-                    .fullName(admin.getFullName())
-                    .email(admin.getEmail())
-                    .build();
-        } else if (roleUser instanceof Prof) {
-            Prof prof = profRepository.save((Prof) roleUser);
-            response = ProfDto.builder()
-                    .id(prof.getId())
-                    .date(prof.getCreatedDate())
-                    .fullName(prof.getFullName())
-                    .email(prof.getEmail())
-                    .build();
-        } else {
-            Student student = studentRepository.save((Student) roleUser);
-            response = StudentDto.builder()
-                    .id(student.getId())
-                    .date(student.getCreatedDate())
-                    .fullName(student.getFullName())
-                    .email(student.getEmail())
-                    .build();
-        }
-
-        return ApiResponseDto.response(
-                ApiResponseDto.StatusInfo.builder()
-                        .code(200)
-                        .message("Pending user role updated successfully")
-                        .build(),
-                response
-        );
+    if (roleUser instanceof Admin) {
+      adminRepository.save((Admin) roleUser);
+    } else if (roleUser instanceof Prof) {
+      profRepository.save((Prof) roleUser);
+    } else if (roleUser instanceof Student) {
+      studentRepository.save((Student) roleUser);
+    } else {
+      throw new IllegalArgumentException(
+          "Unknown user role: " + roleUser.getClass().getSimpleName());
     }
+
+    pendingUserRepository.deleteById(id);
+
+    UserDto response;
+
+    if (roleUser instanceof Admin) {
+      Admin admin = adminRepository.save((Admin) roleUser);
+      response =
+          AdminDto.builder()
+              .id(admin.getId())
+              .date(admin.getCreatedDate())
+              .fullName(admin.getFullName())
+              .email(admin.getEmail())
+              .build();
+    } else if (roleUser instanceof Prof) {
+      Prof prof = profRepository.save((Prof) roleUser);
+      response =
+          ProfDto.builder()
+              .id(prof.getId())
+              .date(prof.getCreatedDate())
+              .fullName(prof.getFullName())
+              .email(prof.getEmail())
+              .build();
+    } else {
+      Student student = studentRepository.save((Student) roleUser);
+      response =
+          StudentDto.builder()
+              .id(student.getId())
+              .date(student.getCreatedDate())
+              .fullName(student.getFullName())
+              .email(student.getEmail())
+              .build();
+    }
+
+    return ApiResponseDto.response(
+        ApiResponseDto.StatusInfo.builder()
+            .code(200)
+            .message("Pending user role updated successfully")
+            .build(),
+        response);
+  }
 }

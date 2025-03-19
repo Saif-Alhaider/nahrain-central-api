@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/admin")
 @RequiredArgsConstructor
 public class CreateNewUserController {
-    private final CreateNewUserService createNewUserService;
+  private final CreateNewUserService createNewUserService;
 
-    @PostMapping("/users")
-    public ResponseEntity<ApiResponseDto<UserDto>> createNewUser(@RequestBody NewUserDto newUserDto) {
-        ApiResponseDto<UserDto> payload = createNewUserService.createNewUser(newUserDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(payload);
-    }
+  @PostMapping("/users")
+  public ResponseEntity<ApiResponseDto<UserDto>> createNewUser(@RequestBody NewUserDto newUserDto) {
+    ApiResponseDto<UserDto> payload = createNewUserService.createNewUser(newUserDto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(payload);
+  }
 }

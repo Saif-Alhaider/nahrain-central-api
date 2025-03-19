@@ -12,5 +12,4 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Table(name = "_admin")
 @PrimaryKeyJoinColumn(name = "id")
-public class Admin extends User {
-}
+public class Admin extends User {}

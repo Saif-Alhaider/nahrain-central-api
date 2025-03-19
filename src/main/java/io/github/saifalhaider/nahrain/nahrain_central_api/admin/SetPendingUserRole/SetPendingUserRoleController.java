@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/admin")
 @RequiredArgsConstructor
 public class SetPendingUserRoleController {
-    private final SetPendingUserRoleService setPendingUserRoleService;
+  private final SetPendingUserRoleService setPendingUserRoleService;
 
-
-    @PutMapping("/users/pending/{id}")
-    public ApiResponseDto<UserDto> getStudents(
-            @PathVariable Integer id,
-            @RequestBody RoleDto roleDto) {
-        return setPendingUserRoleService.updatePendingUserRole(id,roleDto.getRole());
-    }
-
+  @PutMapping("/users/pending/{id}")
+  public ApiResponseDto<UserDto> getStudents(
+      @PathVariable Integer id, @RequestBody RoleDto roleDto) {
+    return setPendingUserRoleService.updatePendingUserRole(id, roleDto.getRole());
+  }
 }

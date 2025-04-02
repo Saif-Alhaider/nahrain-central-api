@@ -2,7 +2,7 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.ProfDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Prof;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

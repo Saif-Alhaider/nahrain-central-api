@@ -3,7 +3,7 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.admin.getUserInfo;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.UserDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.RoleBasedDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

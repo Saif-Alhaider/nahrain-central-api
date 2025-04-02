@@ -2,15 +2,17 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.admin.getUsers;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.*;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Admin;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.PendingUser;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Student;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Admin;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.PendingUser;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Prof;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Student;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.*;
+
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -10,7 +10,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiRespons
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.RoleBasedDtoMapper;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;

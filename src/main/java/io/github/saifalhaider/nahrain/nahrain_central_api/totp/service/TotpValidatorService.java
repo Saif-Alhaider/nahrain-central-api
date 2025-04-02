@@ -12,7 +12,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseRespon
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.MessageDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.controller.Exceptions.IncorrectTotp;
 import io.github.saifalhaider.nahrain.nahrain_central_api.totp.controller.Exceptions.TwoFactorNotEnabled;
 import lombok.RequiredArgsConstructor;

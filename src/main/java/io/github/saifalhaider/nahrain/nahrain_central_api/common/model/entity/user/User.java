@@ -1,9 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user;
 
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Admin;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Student;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;

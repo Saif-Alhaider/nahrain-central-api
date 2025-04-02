@@ -11,7 +11,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiRespons
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

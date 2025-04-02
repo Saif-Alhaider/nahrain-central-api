@@ -19,6 +19,8 @@ public enum AuthResponseCode implements BaseResponseCode {
   TOTP_IS_INCORRECT(1012, "Incorrect Totp Code"),
   TOTP_VERIFIED(1013, "Totp Verified Successfully"),
   NEW_USER_CREATED(1014, "New User Created Successfully"),
+  INVALID_ROLE_ASSIGNMENT(1015, "Invalid Role Assignment"),
+  PENDING_ROLE_ASSIGNMENT(1016, "Pending Role Assignment Successfully"),
   ;
 
   private final int code;

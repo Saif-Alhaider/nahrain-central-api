@@ -1,9 +1,5 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Admin;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.PendingUser;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Student;
 import jakarta.annotation.Nullable;
 
 public class UserFactory {

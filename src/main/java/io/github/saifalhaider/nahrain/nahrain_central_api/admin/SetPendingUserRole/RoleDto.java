@@ -1,11 +1,13 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole.exceptions.InvalidRoleAssignment;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.stage.Stage;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class RoleDto {
-  private User.Role role;
+public record RoleDto(User.Role role, Stage.StageType stageType) {
+  public RoleDto {
+    if (role == User.Role.STUDENT && stageType == null) {
+      throw new InvalidRoleAssignment("Stage selection is required for students");
+    }
+  }
 }

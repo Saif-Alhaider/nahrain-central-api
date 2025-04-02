@@ -1,9 +1,9 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.UserDto;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Admin;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Prof;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Student;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Admin;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Prof;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Student;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

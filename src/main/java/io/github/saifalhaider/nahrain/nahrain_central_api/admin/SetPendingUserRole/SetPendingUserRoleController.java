@@ -14,6 +14,6 @@ public class SetPendingUserRoleController {
   @PutMapping("/users/pending/{id}")
   public ApiResponseDto<UserDto> getStudents(
       @PathVariable Integer id, @RequestBody RoleDto roleDto) {
-    return setPendingUserRoleService.updatePendingUserRole(id, roleDto.getRole());
+    return setPendingUserRoleService.updatePendingUserRole(id, roleDto.role(), roleDto.stageType());
   }
 }

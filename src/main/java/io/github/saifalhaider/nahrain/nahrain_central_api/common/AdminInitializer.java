@@ -1,9 +1,9 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.validation.email.EmailValidator;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.Admin;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Admin;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.UserRepository;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;

@@ -29,6 +29,6 @@ public class NahrainEmailValidatorImpl implements EmailValidator {
     } else if (!email.endsWith(IQ_PART)) {
       email += IQ_PART;
     }
-    return email;
+    return email.toLowerCase();
   }
 }

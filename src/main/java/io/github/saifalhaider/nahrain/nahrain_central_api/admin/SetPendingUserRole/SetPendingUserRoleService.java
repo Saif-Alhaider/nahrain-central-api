@@ -10,7 +10,6 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.st
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.*;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.stage.StageRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.PendingUserRepository;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepositoryFactory;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -58,7 +57,7 @@ public class SetPendingUserRoleService {
       Stage stage = stageRepo.findByStageType(stageType).orElseThrow();
       student.setStage(stage);
     }
-    return getTypeSafeRepository(user).save(user);
+    return userRepositoryFactory.getRepository(user).save(user);
   }
 
   private ApiResponseDto<UserDto> buildSuccessResponse(User user) {
@@ -70,11 +69,6 @@ public class SetPendingUserRoleService {
                 .build())
         .payload(convertToDto(user))
         .build();
-  }
-
-  @SuppressWarnings("unchecked")
-  private <T extends User> UserRepository<T, Integer> getTypeSafeRepository(User user) {
-    return (UserRepository<T, Integer>) userRepositoryFactory.getRepository(user.getClass());
   }
 
   // TODO Create a Mapper Class

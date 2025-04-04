@@ -1,11 +1,11 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user;
 
+import io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole.exceptions.InvalidRoleAssignment;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Admin;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Prof;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Student;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,14 +16,14 @@ public class UserRepositoryFactory {
   private final StudentRepository studentRepo;
 
   @SuppressWarnings("unchecked")
-  public <T extends User> UserRepository<T, Integer> getRepository(Class<T> userClass) {
-    if (Admin.class.isAssignableFrom(userClass)) {
+  public <T extends User> UserRepository<T, Integer> getRepository(T user) {
+    if (user instanceof Admin) {
       return (UserRepository<T, Integer>) adminRepo;
-    } else if (Prof.class.isAssignableFrom(userClass)) {
+    } else if (user instanceof Prof) {
       return (UserRepository<T, Integer>) profRepo;
-    } else if (Student.class.isAssignableFrom(userClass)) {
+    } else if (user instanceof Student) {
       return (UserRepository<T, Integer>) studentRepo;
     }
-    throw new IllegalArgumentException("Unsupported user type: " + userClass.getName());
+    throw new InvalidRoleAssignment("Unknown user type: " + user.getClass().getSimpleName());
   }
 }

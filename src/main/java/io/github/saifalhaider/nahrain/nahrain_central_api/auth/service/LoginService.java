@@ -10,7 +10,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseRespon
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.RoleBasedDtoMapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.user.RoleBasedDtoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -43,7 +43,7 @@ public class LoginService {
     val accessToken = jwtAccessTokenHandler.generateAccessToken(user);
     val refreshToken = jwtAccessTokenHandler.generateRefreshToken(user);
 
-    val statusInfo = baseResponseCodeToInfoMapper.mapToDomain(AuthResponseCode.LOGIN_SUCCESSFUL);
+    val statusInfo = baseResponseCodeToInfoMapper.mapTo(AuthResponseCode.LOGIN_SUCCESSFUL);
     val payload =
         AuthenticationResponseDto.builder()
             .token(accessToken)

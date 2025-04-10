@@ -3,7 +3,6 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.s
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Student;
 import jakarta.persistence.*;
 import java.util.List;
-
 import lombok.*;
 
 @AllArgsConstructor
@@ -21,18 +20,4 @@ public class Stage {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, unique = true)
   private StageType stageType;
-
-  @Getter
-  public enum StageType {
-    FIRST("First Stage"),
-    SECOND("Second Stage"),
-    THIRD("Third Stage"),
-    FOURTH("Fourth Stage");
-
-    private final String displayName;
-
-    StageType(String displayName) {
-      this.displayName = displayName;
-    }
-  }
 }

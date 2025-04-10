@@ -2,8 +2,8 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.common.base;
 
 import java.util.List;
 
-public interface Mapper<ENTITY, DTO> {
-  ENTITY mapToDomain(DTO dto);
+public interface Mapper<DTO, ENTITY> {
+  DTO mapTo(ENTITY dto);
 
-  List<ENTITY> mapToDomainList(List<DTO> dtoList);
+  List<DTO> mapToList(List<ENTITY> dtoList);
 }

@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.admin.getUsers;
+package io.github.saifalhaider.nahrain.nahrain_central_api.admin.user.getUsers;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.AdminDto;

@@ -15,7 +15,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseRespon
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.UserMapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.user.UserMapper;
 import java.awt.image.BufferedImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

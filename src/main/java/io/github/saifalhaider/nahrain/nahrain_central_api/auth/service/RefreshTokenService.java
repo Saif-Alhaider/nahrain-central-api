@@ -11,7 +11,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseRespon
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.UserRepository;
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.RoleBasedDtoMapper;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.user.RoleBasedDtoMapper;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -59,7 +59,7 @@ public class RefreshTokenService {
                 .user(roleBasedDtoMapper.mapToDto(user.get()))
                 .build();
         ApiResponseDto.StatusInfo statusInfo =
-            baseResponseCodeToInfoMapper.mapToDomain(AuthResponseCode.REFRESH_TOKEN_CREATED);
+            baseResponseCodeToInfoMapper.mapTo(AuthResponseCode.REFRESH_TOKEN_CREATED);
 
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ApiResponseDto.response(statusInfo, payload));

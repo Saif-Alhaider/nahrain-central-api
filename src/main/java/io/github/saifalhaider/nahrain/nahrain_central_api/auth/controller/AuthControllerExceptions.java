@@ -1,6 +1,5 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.auth.controller;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole.exceptions.InvalidRoleAssignment;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.EmailNotValid;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.service.exception.InvalidToken;

@@ -64,14 +64,14 @@ public class RegisterService {
     }
 
     private User saveNewUser(RegisterRequestDto request) {
-        User user = userMapper.mapToDomain(request);
+        User user = userMapper.mapTo(request);
         userRepository.save(user);
         return user;
     }
 
     private ResponseEntity<ApiResponseDto<AuthenticationResponseDto>> generateSuccessResponse(User user) {
         AuthenticationResponseDto authResponse = generateAuthTokens(user);
-        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.mapToDomain(AuthResponseCode.REGISTER_SUCCESSFUL);
+        ApiResponseDto.StatusInfo statusInfo = baseResponseCodeToInfoMapper.mapTo(AuthResponseCode.REGISTER_SUCCESSFUL);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponseDto.response(statusInfo, authResponse));

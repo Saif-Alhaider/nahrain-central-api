@@ -92,7 +92,7 @@ public class AuthenticationControllerTest {
                 .message(authResponseCode.getMessage())
                 .build();
 
-        when(baseResponseCodeToInfoMapper.mapToDomain(authResponseCode)).thenReturn(statusInfo);
+        when(baseResponseCodeToInfoMapper.mapTo(authResponseCode)).thenReturn(statusInfo);
 
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ public class AuthenticationControllerTest {
                 .message(authResponseCode.getMessage())
                 .build();
 
-        when(baseResponseCodeToInfoMapper.mapToDomain(authResponseCode)).thenReturn(statusInfo);
+        when(baseResponseCodeToInfoMapper.mapTo(authResponseCode)).thenReturn(statusInfo);
 
         mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)

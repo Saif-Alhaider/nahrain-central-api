@@ -1,6 +1,6 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole;
+package io.github.saifalhaider.nahrain.nahrain_central_api.admin.user.SetPendingUserRole;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole.exceptions.InvalidRoleAssignment;
+import io.github.saifalhaider.nahrain.nahrain_central_api.admin.user.SetPendingUserRole.exceptions.InvalidRoleAssignment;
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.BaseExceptionAdvice;

@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper;
+package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.user;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.dto.RegisterRequestDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
@@ -14,7 +14,7 @@ public class UserMapper implements Mapper<User, RegisterRequestDto> {
   private final PasswordEncoder passwordEncoder;
 
   @Override
-  public User mapToDomain(RegisterRequestDto registerRequestDto) {
+  public User mapTo(RegisterRequestDto registerRequestDto) {
     return UserFactory.createUser(
         registerRequestDto.getFullName(),
         registerRequestDto.getEmail(),
@@ -25,7 +25,7 @@ public class UserMapper implements Mapper<User, RegisterRequestDto> {
   }
 
   @Override
-  public List<User> mapToDomainList(List<RegisterRequestDto> registerRequestDtos) {
-    return registerRequestDtos.stream().map(this::mapToDomain).toList();
+  public List<User> mapToList(List<RegisterRequestDto> registerRequestDtos) {
+    return registerRequestDtos.stream().map(this::mapTo).toList();
   }
 }

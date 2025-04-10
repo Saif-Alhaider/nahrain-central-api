@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole;
+package io.github.saifalhaider.nahrain.nahrain_central_api.admin.user.SetPendingUserRole;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.model.responseCode.AuthResponseCode;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
@@ -7,6 +7,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.ProfD
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.StudentDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.UserDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.stage.Stage;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.stage.StageType;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.*;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.stage.StageRepository;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.PendingUserRepository;
@@ -25,7 +26,7 @@ public class SetPendingUserRoleService {
   private final UserRepositoryFactory userRepositoryFactory;
 
   public ApiResponseDto<UserDto> updatePendingUserRole(
-      Integer userId, User.Role role, Stage.StageType stageType) {
+      Integer userId, User.Role role, StageType stageType) {
     PendingUser pendingUser = findPendingUserOrThrow(userId);
 
     User newUser = convertToUser(pendingUser, role);
@@ -52,7 +53,7 @@ public class SetPendingUserRoleService {
         pendingUser.getTotpSecret());
   }
 
-  private User saveUserByRole(User user, Stage.StageType stageType) {
+  private User saveUserByRole(User user, StageType stageType) {
     if (user instanceof Student student) {
       Stage stage = stageRepo.findByStageType(stageType).orElseThrow();
       student.setStage(stage);

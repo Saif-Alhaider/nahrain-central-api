@@ -43,7 +43,7 @@ public class TotpValidatorService {
         }
         if (isValid(user.getTotpSecret(), totp)) {
             userRepository.updateMfaEnabled(user.getEmail(), true);
-            val statusInfo = baseResponseCodeToInfoMapper.mapToDomain(AuthResponseCode.TOTP_VERIFIED);
+            val statusInfo = baseResponseCodeToInfoMapper.mapTo(AuthResponseCode.TOTP_VERIFIED);
             val payload = MessageDto.builder().message("Totp Verified Successfully").build();
 
             return ResponseEntity.status(HttpStatus.OK)

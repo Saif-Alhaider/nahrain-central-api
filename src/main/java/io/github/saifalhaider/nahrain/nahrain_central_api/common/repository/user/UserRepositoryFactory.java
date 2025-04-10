@@ -1,6 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole.exceptions.InvalidRoleAssignment;
+import io.github.saifalhaider.nahrain.nahrain_central_api.admin.user.SetPendingUserRole.exceptions.InvalidRoleAssignment;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Admin;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Prof;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Student;

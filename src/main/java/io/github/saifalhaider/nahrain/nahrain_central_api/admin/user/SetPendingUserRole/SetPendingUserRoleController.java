@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.admin.SetPendingUserRole;
+package io.github.saifalhaider.nahrain.nahrain_central_api.admin.user.SetPendingUserRole;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.UserDto;

@@ -8,7 +8,7 @@ import java.util.List;
 public class BaseResponseCodeToInfoMapper implements Mapper<ApiResponseDto.StatusInfo, BaseResponseCode> {
 
     @Override
-    public ApiResponseDto.StatusInfo mapToDomain(BaseResponseCode baseResponseCode) {
+    public ApiResponseDto.StatusInfo mapTo(BaseResponseCode baseResponseCode) {
         return ApiResponseDto.StatusInfo.builder()
                 .code(baseResponseCode.getCode())
                 .message(baseResponseCode.getMessage())
@@ -16,7 +16,7 @@ public class BaseResponseCodeToInfoMapper implements Mapper<ApiResponseDto.Statu
     }
 
     @Override
-    public List<ApiResponseDto.StatusInfo> mapToDomainList(List<BaseResponseCode> baseResponseCodes) {
-        return baseResponseCodes.stream().map(this::mapToDomain).toList();
+    public List<ApiResponseDto.StatusInfo> mapToList(List<BaseResponseCode> baseResponseCodes) {
+        return baseResponseCodes.stream().map(this::mapTo).toList();
     }
 }

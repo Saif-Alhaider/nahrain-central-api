@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper;
+package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.user;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.UserDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Admin;
@@ -17,11 +17,11 @@ public class RoleBasedDtoMapper {
 
   public UserDto mapToDto(User user) {
     if (user instanceof Admin admin) {
-      return adminDtoMapper.mapToDomain(admin);
+      return adminDtoMapper.mapTo(admin);
     } else if (user instanceof Prof prof) {
-      return profDtoMapper.mapToDomain(prof);
+      return profDtoMapper.mapTo(prof);
     } else if (user instanceof Student student) {
-      return studentDtoMapper.mapToDomain(student);
+      return studentDtoMapper.mapTo(student);
     } else {
       return null;
     }

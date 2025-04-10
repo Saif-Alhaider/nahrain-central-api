@@ -24,7 +24,7 @@ public abstract class BaseExceptionAdvice {
             "message", err.getMessage());
     val payload =
         ApiResponseDto.response(
-            baseResponseCodeToInfoMapper.mapToDomain(responseCode), errorResponse);
+            baseResponseCodeToInfoMapper.mapTo(responseCode), errorResponse);
 
     return ResponseEntity.status(status).body(payload);
   }

@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper;
+package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.user;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.AdminDto;
@@ -11,7 +11,7 @@ import java.util.List;
 public class AdminDtoMapper implements Mapper<AdminDto, Admin> {
 
   @Override
-  public AdminDto mapToDomain(Admin admin) {
+  public AdminDto mapTo(Admin admin) {
     return AdminDto.builder()
         .id(admin.getId())
         .email(admin.getEmail())
@@ -21,7 +21,7 @@ public class AdminDtoMapper implements Mapper<AdminDto, Admin> {
   }
 
   @Override
-  public List<AdminDto> mapToDomainList(List<Admin> admins) {
-    return admins.stream().map(this::mapToDomain).toList();
+  public List<AdminDto> mapToList(List<Admin> admins) {
+    return admins.stream().map(this::mapTo).toList();
   }
 }

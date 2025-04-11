@@ -1,6 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.getCurriculums.CurriculumDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.CurriculumDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.Mapper;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.curriculum.Curriculum;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.stage.Stage;

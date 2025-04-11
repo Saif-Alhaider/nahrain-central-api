@@ -1,6 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.createNewCurriculum;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.getCurriculums.CurriculumDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.CurriculumDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.base.ApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

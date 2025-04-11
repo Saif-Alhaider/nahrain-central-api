@@ -1,6 +1,5 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.getCurriculums;
+package io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.ProfDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.stage.StageType;
 import java.util.List;
 import lombok.*;

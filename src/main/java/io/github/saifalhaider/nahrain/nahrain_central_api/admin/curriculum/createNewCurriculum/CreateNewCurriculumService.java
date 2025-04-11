@@ -1,6 +1,6 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.createNewCurriculum;
 
-import io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.getCurriculums.CurriculumDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.CurriculumDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.curriculum.Curriculum;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.stage.Stage;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Prof;
@@ -61,8 +61,4 @@ public class CreateNewCurriculumService {
     Curriculum savedCurriculum = curriculumRepository.save(curriculum);
     return curriculumDtoMapper.mapTo(savedCurriculum);
   }
-
-    public CurriculumMapper getCurriculumMapper() {
-        return curriculumMapper;
-    }
 }

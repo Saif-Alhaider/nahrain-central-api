@@ -10,9 +10,9 @@ import lombok.*;
 @Data
 @Entity
 @Builder
-@Table(name = "_stage")
+@Table(name = "stage")
 public class Stage {
-  @Id @GeneratedValue private Integer id;
+  @Id @GeneratedValue private Long id;
 
   @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL)
   private List<Student> students;

@@ -31,7 +31,7 @@ public class Curriculum {
   Stage stage;
 
   public List<String> getResourcesList() {
-    return resources != null ? Arrays.asList(resources.split(",")) : Collections.emptyList();
+    return resources != null ? Arrays.asList(resources.split(",")) : null;
   }
 
   public void setResourcesList(List<String> items) {

@@ -22,6 +22,7 @@ public class CurriculumDtoMapper implements Mapper<CurriculumDto, Curriculum> {
                 .stageType(curriculum.getStage().getStageType())
                 .type(toDtoType(curriculum.getType()))
                 .profs(profDtoMapper.mapToList(curriculum.getProfs()))
+                .resources(curriculum.getResourcesList())
                 .build();
     }
 

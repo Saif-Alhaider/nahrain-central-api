@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GetCurriculumService {
+public class GetCurriculumsService {
 
     private final CurriculumRepository curriculumRepository;
     private final CurriculumDtoMapper curriculumDtoMapper;

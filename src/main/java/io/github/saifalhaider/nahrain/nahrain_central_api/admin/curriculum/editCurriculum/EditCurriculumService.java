@@ -1,4 +1,4 @@
-package io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.createNewCurriculum;
+package io.github.saifalhaider.nahrain.nahrain_central_api.admin.curriculum.editCurriculum;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.CurriculumDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.curriculum.Curriculum;
@@ -10,51 +10,45 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.service.mapper.CurriculumDtoMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreateNewCurriculumService {
+public class EditCurriculumService {
   private final CurriculumRepository curriculumRepository;
-  private final ProfRepository profRepository;
   private final StageRepository stageRepository;
+  private final ProfRepository profRepository;
   private final CurriculumDtoMapper curriculumDtoMapper;
 
   @Transactional
-  public CurriculumDto createCurriculum(CurriculumRequest request) {
-    Stage stage =
-        stageRepository
-            .findByStageType(request.getStageType())
+  public CurriculumDto updateCurriculum(EditCurriculumRequest request) {
+    Curriculum curriculum =
+        curriculumRepository
+            .findById(request.getId())
             .orElseThrow(
                 () ->
                     new EntityNotFoundException(
-                        "Stage not found with type: " + request.getStageType()));
+                        "Curriculum not found with id: " + request.getId()));
 
-    List<Prof> profs = Collections.emptyList();
-    if (request.getProfsIds() != null && !request.getProfsIds().isEmpty()) {
-      profs = profRepository.findAllById(request.getProfsIds());
+    curriculum.setType(request.getType());
+    curriculum.setName(request.getName());
+    curriculum.setResourcesList(request.getResources());
 
-      if (profs.size() != request.getProfsIds().size()) {
-        Set<Integer> foundIds = profs.stream().map(Prof::getId).collect(Collectors.toSet());
-        List<Integer> missingIds =
-            request.getProfsIds().stream().filter(id -> !foundIds.contains(id)).toList();
-        throw new EntityNotFoundException("Professors not found with IDs: " + missingIds);
-      }
+    if (!curriculum.getStage().getId().equals(request.getStageId())) {
+      Stage newStage =
+          stageRepository
+              .findById(request.getStageId())
+              .orElseThrow(() -> new EntityNotFoundException("Stage not found"));
+      curriculum.setStage(newStage);
     }
 
-    Curriculum curriculum =
-        Curriculum.customBuilder()
-            .name(request.getName())
-            .stage(stage)
-            .type(request.getCurriculumType())
-            .profs(profs)
-            .resourcesList(request.getResources())
-            .build();
+    List<Prof> professors = profRepository.findAllById(request.getProfIds());
+    if (professors.size() != request.getProfIds().size()) {
+      throw new EntityNotFoundException("One or more professors not found");
+    }
+    curriculum.setProfs(professors);
 
     Curriculum savedCurriculum = curriculumRepository.save(curriculum);
     return curriculumDtoMapper.mapTo(savedCurriculum);

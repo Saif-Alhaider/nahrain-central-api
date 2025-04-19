@@ -21,6 +21,7 @@ public enum AuthResponseCode implements BaseResponseCode {
   NEW_USER_CREATED(1014, "New User Created Successfully"),
   INVALID_ROLE_ASSIGNMENT(1015, "Invalid Role Assignment"),
   PENDING_ROLE_ASSIGNMENT(1016, "Pending Role Assignment Successfully"),
+  ENTITY_NOT_FOUND(1017, "Entity Not Found"),
   ;
 
   private final int code;

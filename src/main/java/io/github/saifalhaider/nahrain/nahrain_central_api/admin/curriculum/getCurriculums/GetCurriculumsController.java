@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/admin")
 @RequiredArgsConstructor
-public class GetCurriculumController {
-  private final GetCurriculumService getCurriculumService;
+public class GetCurriculumsController {
+  private final GetCurriculumsService getCurriculumsService;
 
   @GetMapping("/curricula")
   public ApiResponseDto<CurriculumByYearResponseDto> getAllCurricula() {
-    CurriculumByYearResponseDto response = getCurriculumService.getAllCurriculaByYear();
+    CurriculumByYearResponseDto response = getCurriculumsService.getAllCurriculaByYear();
     return buildSuccessResponse(response);
   }
 

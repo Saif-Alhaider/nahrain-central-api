@@ -16,6 +16,7 @@ public class StudentDtoMapper implements Mapper<StudentDto, Student> {
                 .email(student.getEmail())
                 .date(student.getCreatedDate())
                 .fullName(student.getFullName())
+                .stageType(student.getStage().getStageType())
                 .build();
     }
 

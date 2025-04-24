@@ -7,12 +7,10 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.us
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Prof;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.Student;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
-
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.*;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import io.github.saifalhaider.nahrain.nahrain_central_api.common.repository.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,23 +27,26 @@ public class GetUsersService {
 
     public ApiResponseDto<UsersDto<StudentDto>> getStudents(int pageNumber, int pageSize) {
 
-        Function<Page<Student>, UsersDto<StudentDto>> studentMapper = page -> {
-            List<StudentDto> students = page
-                    .getContent()
-                    .stream()
-                    .map(student -> StudentDto.builder()
-                            .id(student.getId())
-                            .fullName(student.getFullName())
-                            .email(student.getEmail())
-                            .date(student.getCreatedDate())
-                            .build())
-                    .collect(Collectors.toList());
+    Function<Page<Student>, UsersDto<StudentDto>> studentMapper =
+        page -> {
+          List<StudentDto> students =
+              page.getContent().stream()
+                  .map(
+                      student ->
+                          StudentDto.builder()
+                              .id(student.getId())
+                              .fullName(student.getFullName())
+                              .email(student.getEmail())
+                              .date(student.getCreatedDate())
+                              .stageType(student.getStage().getStageType())
+                              .build())
+                  .collect(Collectors.toList());
 
-            return UsersDto.<StudentDto>builder()
-                    .users(students)
-                    .totalPages(page.getTotalPages())
-                    .totalNumberOfUsers(page.getTotalElements())
-                    .build();
+          return UsersDto.<StudentDto>builder()
+              .users(students)
+              .totalPages(page.getTotalPages())
+              .totalNumberOfUsers(page.getTotalElements())
+              .build();
         };
 
         return getPaginatedData(pageNumber, pageSize, studentRepository, studentMapper, "Students retrieved successfully");
@@ -122,6 +123,15 @@ public class GetUsersService {
 
 
         return getPaginatedData(pageNumber, pageSize, pendingUserRepository, pendingUserMapper,"Pending Users retrieved successfully");
+    }
+
+    public UsersCount getUsersCount() {
+        final Long profsCount = profRepository.count();
+        final Long studentsCount = studentRepository.count();
+        return UsersCount.builder()
+                .profsCount(profsCount)
+                .studentsCount(studentsCount)
+                .build();
     }
 
     public <ENT extends User, DTO extends UserDto> ApiResponseDto<UsersDto<DTO>> getPaginatedData(

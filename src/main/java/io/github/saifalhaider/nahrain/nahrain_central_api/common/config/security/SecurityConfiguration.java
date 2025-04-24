@@ -3,6 +3,7 @@ package io.github.saifalhaider.nahrain.nahrain_central_api.common.config.securit
 import io.github.saifalhaider.nahrain.nahrain_central_api.auth.filter.JWTAuthFilter;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.FilterChainExceptionHandler;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,11 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -51,6 +47,8 @@ public class SecurityConfiguration {
                     .permitAll()
                     .requestMatchers("/api/v1/admin/**")
                     .hasAuthority(User.Role.ADMIN.name())
+                    .requestMatchers("/api/v1/prof/**")
+                    .hasAuthority(User.Role.PROF.name())
                     .anyRequest()
                     .authenticated())
         .sessionManagement(

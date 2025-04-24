@@ -6,6 +6,7 @@ import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.Pendi
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.ProfDto;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.StudentDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,5 +44,16 @@ public class GetUsersController {
       @RequestParam(defaultValue = "0", required = false) int pageNumber,
       @RequestParam(defaultValue = "1", required = false) int pageSize) {
     return getUsersService.getPendingUsers(pageNumber, pageSize);
+  }
+
+  @GetMapping("/count")
+  public ApiResponseDto<UsersCount> getUsersCount() {
+    UsersCount usersCount = getUsersService.getUsersCount();
+    return ApiResponseDto.response(
+        ApiResponseDto.StatusInfo.builder()
+            .code(HttpStatus.OK.value())
+            .message("users count retrieved successfully")
+            .build(),
+        usersCount);
   }
 }

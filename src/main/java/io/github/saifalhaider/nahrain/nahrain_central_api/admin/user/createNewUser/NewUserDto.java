@@ -1,6 +1,7 @@
 package io.github.saifalhaider.nahrain.nahrain_central_api.admin.user.createNewUser;
 
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.dto.GenderDto;
+import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.stage.StageType;
 import io.github.saifalhaider.nahrain.nahrain_central_api.common.model.entity.user.User;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,5 @@ public class NewUserDto {
   private String phoneNumber;
   private String province;
   private User.Role role;
+  private StageType stageType;
 }
